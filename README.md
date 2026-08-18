@@ -32,3 +32,4 @@ Designed and developed by **Sumit**.
 ```text
 Copyright (c) 2026 Sumit. All Rights Reserved.
 Unauthorized copying or distribution of this code base is strictly prohibited.
+```

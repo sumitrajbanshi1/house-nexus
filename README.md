@@ -20,7 +20,7 @@
 ## 📁 File Structure
 
 ```text
-house-hub/
+house-nexus/
 ├── index.html        # Landing page with interactive canvas
 ├── portal.html       # Main resident dashboard
 └── files/            # PDF documents & agreements

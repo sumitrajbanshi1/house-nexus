@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Sumit" />
+  <meta name="copyright" content="© 2026 Sumit. All Rights Reserved." />
+  <title>House Hub | Resident Portal</title>
+  <style>
+      /* 
+    * House Hub Stylesheet
+	* Developed by Sumit © 2026
+	* All Rights Reserved.
+    */
+  
+    :root {
+      --bg-dark: #07090e;
+      --card-bg: rgba(18, 24, 38, 0.75);
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --text-main: #f0f4f8;
+      --text-muted: #8b9bb4;
+      --border: rgba(255, 255, 255, 0.08);
+      --header-bg: rgba(7, 9, 14, 0.85);
+      --sidebar-bg: rgba(11, 15, 25, 0.95);
+      --ease-cb: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* LIGHT THEME OVERRIDES */
+    body.light-mode {
+      --bg-dark: #f4f6f9;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --accent-cyan: #0084ff;
+      --accent-blue: #00c6ff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --border: rgba(0, 0, 0, 0.1);
+      --header-bg: rgba(255, 255, 255, 0.85);
+      --sidebar-bg: rgba(255, 255, 255, 0.95);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* TOP BAR WITH THEME TOGGLE ON THE RIGHT */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      background: var(--header-bg);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease;
+    }
+
+    .logo {
+      font-weight: 800;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, var(--text-main), var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* THEME TOGGLE BUTTON IN TOP RIGHT CORNER */
+    .theme-toggle-btn {
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s var(--ease-cb);
+    }
+
+    .theme-toggle-btn:hover {
+      transform: scale(1.08);
+      border-color: var(--accent-cyan);
+    }
+
+    /* LEFT CORNER MENU BUTTON CONTAINER */
+    .menu-bar-container {
+      width: 100%;
+      padding: 16px 0 0 24px;
+      display: flex;
+      justify-content: flex-start;
+    }
+
+    /* SIDEBAR TOGGLE BUTTON */
+    .menu-toggle-btn {
+      background: rgba(0, 242, 254, 0.1);
+      border: 1px solid var(--accent-cyan);
+      color: var(--accent-cyan);
+      border-radius: 12px;
+      padding: 10px 18px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s var(--ease-cb);
+    }
+
+    .menu-toggle-btn:hover {
+      background: var(--accent-cyan);
+      color: #05070c;
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* SLIDING SIDEBAR DRAWER */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -300px;
+      width: 280px;
+      height: 100vh;
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid var(--border);
+      z-index: 200;
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      transition: left 0.4s var(--ease-cb), background 0.3s ease;
+      box-shadow: 10px 0 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .sidebar.open {
+      left: 0;
+    }
+
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s ease;
+    }
+
+    .close-btn:hover {
+      color: var(--text-main);
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
+      text-align: left;
+      transition: all 0.3s var(--ease-cb);
+    }
+
+    .sidebar-btn:hover {
+      color: var(--text-main);
+      border-color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.1);
+      transform: translateX(4px);
+    }
+
+    .sidebar-btn.active {
+      color: var(--text-main);
+      background: rgba(0, 242, 254, 0.15);
+      border-color: var(--accent-cyan);
+    }
+
+    /* BACKDROP OVERLAY */
+    .sidebar-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      z-index: 150;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .sidebar-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* MAIN CONTENT AREA */
+    .container {
+      max-width: 1000px;
+      margin: 20px auto 40px;
+      padding: 0 16px;
+      flex: 1;
+    }
+
+    .section-panel {
+      display: none;
+      animation: fadeIn 0.5s var(--ease-cb) forwards;
+    }
+
+    .section-panel.active { display: block; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px;
+      backdrop-filter: blur(12px);
+      transition: transform 0.4s var(--ease-cb), border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 20px 40px rgba(0, 132, 255, 0.1);
+    }
+
+    .card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      color: var(--accent-cyan);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .wifi-box {
+      background: rgba(0, 242, 254, 0.05);
+      border: 1px dashed var(--accent-cyan);
+      border-radius: 12px;
+      padding: 16px;
+      margin: 12px 0;
+    }
+
+    .wifi-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-family: monospace;
+    }
+
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 20px;
+      margin-top: 10px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      color: #ffffff;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.3s var(--ease-cb), box-shadow 0.3s var(--ease-cb);
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+    }
+
+    .rule-list { list-style: none; }
+
+    .rule-list li {
+      position: relative;
+      padding-left: 26px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .rule-list li::before {
+      content: "✦";
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+    }
+
+    .download-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .download-item:last-child { border-bottom: none; }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--header-bg);
+      padding: 24px;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: auto;
+    }
+
+    footer a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">🏠 HOUSE NEXUS</a>
+    <div class="header-actions">
+      <a href="index.html" style="color: var(--text-muted); text-decoration: none; font-size: 0.9rem;">← Back to Welcome</a>
+      <button class="theme-toggle-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle Dark/Light Mode" aria-label="Toggle Theme">
+        🌙
+      </button>
+    </div>
+  </header>
+
+  <div class="menu-bar-container">
+    <button class="menu-toggle-btn" onclick="toggleSidebar()" aria-label="Toggle Menu">
+      <span>☰</span> Navigation Menu
+    </button>
+  </div>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span class="sidebar-title">NAVIGATION</span>
+      <button class="close-btn" onclick="toggleSidebar()">✕</button>
+    </div>
+
+    <nav class="sidebar-menu">
+      <button class="sidebar-btn active" onclick="switchTab(event, 'tab-overview')">
+        <span>📶</span> Overview & Wi-Fi
+      </button>
+      <button class="sidebar-btn" onclick="switchTab(event, 'tab-rules')">
+        <span>🧹</span> Cleaning & Rules
+      </button>
+      <button class="sidebar-btn" onclick="switchTab(event, 'tab-terms')">
+        <span>📜</span> Terms & Conditions
+      </button>
+      <button class="sidebar-btn" onclick="switchTab(event, 'tab-downloads')">
+        <span>📁</span> Agreements & Downloads
+      </button>
+    </nav>
+  </aside>
+
+  <main class="container">
+    
+    <section id="tab-overview" class="section-panel active">
+      <div class="grid">
+        <div class="card">
+          <h2>📶 Wi-Fi Access</h2>
+          <p style="color: var(--text-muted);">High-speed fiber connection for all residents:</p>
+          <div class="wifi-box">
+            <div class="wifi-row">
+              <span style="color: var(--text-muted);">SSID:</span>
+              <span>TBA</span>
+            </div>
+            <div class="wifi-row">
+              <span style="color: var(--text-muted);">Password:</span>
+              <span id="wifiPass">TBA</span>
+            </div>
+          </div>
+          <button class="action-btn" onclick="copyWifi()">Copy Password</button>
+        </div>
+
+        <div class="card">
+          <h2>📞 Emergency & Contacts</h2>
+          <p style="margin-bottom: 8px;"><strong>House Manager:</strong> SR</p>
+          <p style="margin-bottom: 8px;">Phone: <a href="TBA" style="color: var(--accent-cyan); text-decoration: none;">TBA</a></p>
+          <a href="sms:" class="action-btn">Send SMS to Manager</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="tab-rules" class="section-panel">
+      <div class="card">
+        <h2>🧹 House Rules & Maintenance Protocol</h2>
+        <ul class="rule-list">
+          <li>
+            <strong>Kitchen Etiquette & Cooking Cleanliness:</strong> Wash up, dry, and put away dishes immediately after eating. Do not leave dirty dishes in the sink overnight. Keep the sink area clean and dry after use. Always wipe down the gas stove, exhaust fan, and surrounding surfaces to remove grease or oil splatters after cooking.
+          </li>
+          <li>
+            <strong>Kitchen Trash & Waste:</strong> Throw away rubbish immediately. Do not leave plastic bags, egg trays, containers, or empty cardboard boxes lying around the kitchen.
+          </li>
+          <li>
+            <strong>Bin Schedule & Maintenance:</strong>
+            <br>• General Waste: Every <strong>Wednesday morning</strong>.
+            <br>• Recycling (Yellow Bin): Alternate <strong>Wednesday morning</strong>.
+            <br>• Organics/Garden (Green Bin): Alternate <strong>Wednesday morning</strong>.
+            <br>• Daily Upkeep: Empty indoor bins whenever you see they are full—do not pile trash above the rim.
+          </li>
+          <li>
+            <strong>Quiet Hours:</strong> Maintain low volume between <strong>10:00 PM and 7:00 AM</strong> out of respect for working housemates.
+          </li>
+          <li>
+            <strong>House Cleaning:</strong> All household members are equally responsible for keeping shared areas clean. Vacuum floors whenever they look dirty or dusty.
+          </li>
+          <li>
+            <strong>Shared Bathroom:</strong> Clean up hair from drains immediately after showering, wipe down surfaces, and replace toilet rolls when finished.
+          </li>
+          <li>
+            <strong>Overnight Guests:</strong> Allowed up to 2 consecutive nights. Notify housemates via group text beforehand.
+          </li>
+        </ul>
+      </div>
+    </section>
+    
+    <section id="tab-terms" class="section-panel">
+      <div class="card">
+        <h2>📜 Terms & Conditions</h2>
+        <ul class="rule-list">
+          <li><strong>Bond Payment:</strong> Security deposit equals 1 month's rent, payable prior to moving in.</li>
+          <li><strong>Bond Refund:</strong> The full bond amount will be returned upon move-out, provided the property is left in the same clean, undamaged condition as when handed over.</li>
+          <li><strong>Property Damage:</strong> If damage occurs to the property beyond normal wear and tear, the tenant responsible must cover the full cost of repair, even if it exceeds the bond amount.</li>
+          <li><strong>Notice Period:</strong> A minimum of 4 weeks' written notice is required before vacating the property.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="tab-downloads" class="section-panel">
+      <div class="card">
+        <h2>📁 Downloads & Formal Agreements</h2>
+        <p style="color: var(--text-muted); margin-bottom: 16px;">Click below to download official copies of agreements and forms:</p>
+
+        <div class="download-item">
+          <div>
+            <strong>Tenancy Agreement Contract</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Official Lease Agreement • PDF</p>
+          </div>
+          <a href="files/Tenancy_Agreement.pdf" download="Tenancy_Agreement.pdf" class="action-btn" style="width: auto; padding: 10px 20px;">Download PDF</a>
+        </div>
+
+        <div class="download-item">
+          <div>
+            <strong>Room Condition & Inventory Checklist</strong>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Move-in Inspection Form • PDF</p>
+          </div>
+          <a href="files/Inventory_Checklist.pdf" download="Inventory_Checklist.pdf" class="action-btn" style="width: auto; padding: 10px 20px;">Download PDF</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 House Nexus. All Rights Reserved. Created & Maintained by <strong>Sumit</strong> • <a href="index.html">Back to Home</a></p>
+  </footer>
+
+  <script>
+  
+  // Developer Console Watermark Signature
+  console.log(
+    "%c House Nexus Portal %c Created by Sumit © 2026 | All Rights Reserved ",
+    "background: #00f2fe; color: #000; font-weight: bold; padding: 4px; border-radius: 4px 0 0 4px;",
+    "background: #05070c; color: #00f2fe; padding: 4px; border-radius: 0 4px 4px 0;"
+  );
+  
+    // THEME TOGGLE LOGIC
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light-mode');
+      const themeBtn = document.getElementById('themeBtn');
+      themeBtn.innerText = isLight ? '☀️' : '🌙';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    }
+
+    // PERSIST THEME PREFERENCE
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      document.getElementById('themeBtn').innerText = '☀️';
+    }
+
+    // NAVIGATION LOGIC
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('open');
+      overlay.classList.toggle('active');
+    }
+
+    function switchTab(e, tabId) {
+      document.querySelectorAll('.section-panel').forEach(panel => panel.classList.remove('active'));
+      document.querySelectorAll('.sidebar-btn').forEach(btn => btn.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      e.currentTarget.classList.add('active');
+
+      toggleSidebar();
+    }
+
+    function copyWifi() {
+      const pass = document.getElementById('wifiPass').innerText;
+      navigator.clipboard.writeText(pass);
+      alert('Wi-Fi Password copied to clipboard!');
+    }
+  </script>
+</body>
+</html>

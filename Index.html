@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="author" content="Sumit" />
+  <meta name="copyright" content="© 2026 Sumit. All Rights Reserved." />
+  <title>Welcome | Resident Portal</title>
+  <style>
+  
+    /* 
+    * House Hub Stylesheet
+	* Developed by Sumit © 2026
+	* All Rights Reserved.
+    */
+    :root {
+      --bg-dark: #05070c;
+      --accent-cyan: #00f2fe;
+      --accent-blue: #4facfe;
+      --text-main: #f0f4f8;
+      --text-muted: #8b9bb4;
+      --ease-cb: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      touch-action: none;
+    }
+
+    /* GLASS CARD WITH MOVEMENT & GLOW */
+    .landing-card {
+      position: relative;
+      z-index: 1;
+      width: 90%;
+      max-width: 640px;
+      padding: 48px 36px;
+      background: rgba(13, 18, 30, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      transition: transform 0.3s var(--ease-cb), border-color 0.3s ease, box-shadow 0.3s ease;
+      animation: heroAppear 1.2s var(--ease-cb) forwards;
+      will-change: transform;
+    }
+
+    .landing-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), 
+                                   rgba(0, 242, 254, 0.18) 0%, 
+                                   transparent 65%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .landing-card:hover {
+      transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+      border-color: rgba(0, 242, 254, 0.4);
+      box-shadow: 0 30px 60px rgba(0, 242, 254, 0.25);
+    }
+
+    .landing-card:hover::after {
+      opacity: 1;
+    }
+
+    /* GLOWING HOVER TEXT HEADINGS */
+    .glow-heading {
+      font-size: 2.8rem;
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: text-shadow 0.3s ease, transform 0.3s ease;
+      cursor: default;
+    }
+
+    .glow-heading:hover {
+      transform: scale(1.02);
+      filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.8));
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      background: rgba(0, 242, 254, 0.08);
+      border: 1px solid rgba(0, 242, 254, 0.25);
+      border-radius: 50px;
+      margin-bottom: 24px;
+      transition: all 0.3s ease;
+    }
+
+    .badge:hover {
+      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
+      transform: scale(1.05);
+    }
+
+    .address {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      transition: color 0.3s ease;
+    }
+
+    .address:hover {
+      color: #fff;
+      text-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    .typewriter-box {
+      min-height: 48px;
+      font-size: 0.95rem;
+      color: #a0aec0;
+      margin-bottom: 36px;
+      line-height: 1.6;
+    }
+
+    /* HIGH GLOW INTERACTIVE BUTTON */
+    .enter-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 40px;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #05070c;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.3s var(--ease-cb), box-shadow 0.3s var(--ease-cb);
+      overflow: hidden;
+    }
+
+    .enter-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .enter-btn:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
+    }
+
+    .enter-btn:hover::before {
+      left: 100%;
+    }
+
+    .enter-btn:active {
+      transform: translateY(0) scale(0.97);
+    }
+
+    .click-ripple {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      transform: scale(0);
+      animation: rippleEffect 0.6s linear;
+      pointer-events: none;
+    }
+
+    @keyframes heroAppear {
+      from { opacity: 0; transform: translateY(40px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes rippleEffect {
+      to { transform: scale(4); opacity: 0; }
+    }
+
+    @media (max-width: 480px) {
+      .glow-heading { font-size: 2rem; }
+      .landing-card { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <main class="landing-card" id="interactiveCard">
+    <span class="badge">Resident & Guest Portal</span>
+    <h1 class="glow-heading">WELCOME HOME</h1>
+    <p class="address">📍 123 Sunshine Street • Residence Hub</p>
+    
+    <div class="typewriter-box">
+      <span id="typewriter"></span>
+    </div>
+
+    <a href="portal.html" class="enter-btn" id="enterBtn">
+      <span>ENTER HOUSE HUB</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+    </a>
+  </main>
+
+  <script>
+  // Developer Console Watermark Signature
+  console.log(
+    "%c House Nexus Portal %c Created by Sumit © 2026 | All Rights Reserved ",
+    "background: #00f2fe; color: #000; font-weight: bold; padding: 4px; border-radius: 4px 0 0 4px;",
+    "background: #05070c; color: #00f2fe; padding: 4px; border-radius: 0 4px 4px 0;"
+  );
+
+  
+    // TOUCH & MOUSE SENSITIVE CONNECTED STAR STRING CANVAS ENGINE
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    
+    // Mouse / Touch Position Tracking
+    const touchPointer = {
+      x: null,
+      y: null,
+      radius: 140
+    };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Event listeners for Mouse & Touch motion
+    window.addEventListener('mousemove', (e) => {
+      touchPointer.x = e.clientX;
+      touchPointer.y = e.clientY;
+    });
+
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        touchPointer.x = e.touches[0].clientX;
+        touchPointer.y = e.touches[0].clientY;
+      }
+    }, { passive: true });
+
+    window.addEventListener('mouseleave', () => {
+      touchPointer.x = null;
+      touchPointer.y = null;
+    });
+
+    window.addEventListener('touchend', () => {
+      touchPointer.x = null;
+      touchPointer.y = null;
+    });
+
+    // Star Class with Glow and Repulsion Physics
+    class FloatingStar {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.baseRadius = Math.random() * 2 + 1.2;
+        this.currentRadius = this.baseRadius;
+        this.vx = (Math.random() - 0.5) * 0.5;
+        this.vy = (Math.random() - 0.5) * 0.5;
+        this.baseAlpha = Math.random() * 0.5 + 0.3;
+        this.glowIntensity = 0;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Screen boundary wraparound
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+
+        // Interaction check when mouse or finger touches star area
+        if (touchPointer.x !== null && touchPointer.y !== null) {
+          const dx = touchPointer.x - this.x;
+          const dy = touchPointer.y - this.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < touchPointer.radius) {
+            // Star Glows and Expands when touched
+            this.glowIntensity = Math.min(1, (1 - dist / touchPointer.radius) * 1.8);
+            this.currentRadius = this.baseRadius + this.glowIntensity * 4;
+
+            // Subtle push/repulsion effect on string node
+            const force = (touchPointer.radius - dist) / touchPointer.radius;
+            this.x -= (dx / dist) * force * 1.2;
+            this.y -= (dy / dist) * force * 1.2;
+          } else {
+            this.glowIntensity = Math.max(0, this.glowIntensity - 0.05);
+            this.currentRadius = Math.max(this.baseRadius, this.currentRadius - 0.1);
+          }
+        } else {
+          this.glowIntensity = Math.max(0, this.glowIntensity - 0.05);
+          this.currentRadius = Math.max(this.baseRadius, this.currentRadius - 0.1);
+        }
+      }
+
+      draw() {
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
+
+        if (this.glowIntensity > 0) {
+          // Intense Touch Glow
+          ctx.fillStyle = `#00f2fe`;
+          ctx.shadowColor = '#00f2fe';
+          ctx.shadowBlur = 15 * this.glowIntensity;
+        } else {
+          ctx.fillStyle = `rgba(180, 230, 255, ${this.baseAlpha})`;
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    // Initialize Floating Star Nodes
+    const starCount = Math.floor((window.innerWidth * window.innerHeight) / 12000);
+    for (let i = 0; i < Math.max(starCount, 60); i++) {
+      stars.push(new FloatingStar());
+    }
+
+    // Render Canvas Frame
+    function animateCanvas() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 1. Draw Connecting Strings Between Stars
+      for (let i = 0; i < stars.length; i++) {
+        for (let j = i + 1; j < stars.length; j++) {
+          const dx = stars[i].x - stars[j].x;
+          const dy = stars[i].y - stars[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const maxDist = 135;
+
+          if (dist < maxDist) {
+            let lineAlpha = (1 - dist / maxDist) * 0.35;
+            let midX = (stars[i].x + stars[j].x) / 2;
+            let midY = (stars[i].y + stars[j].y) / 2;
+
+            ctx.beginPath();
+
+            // Touch Sensitive String Movement: String bends/warps away from finger or cursor
+            if (touchPointer.x !== null && touchPointer.y !== null) {
+              const pointerDx = touchPointer.x - midX;
+              const pointerDy = touchPointer.y - midY;
+              const pointerDist = Math.sqrt(pointerDx * pointerDx + pointerDy * pointerDy);
+
+              if (pointerDist < touchPointer.radius) {
+                const bendForce = (1 - pointerDist / touchPointer.radius) * 35;
+                midX -= (pointerDx / pointerDist) * bendForce;
+                midY -= (pointerDy / pointerDist) * bendForce;
+
+                // Increase string glow near touch point
+                lineAlpha = Math.min(0.8, lineAlpha + 0.4);
+                ctx.strokeStyle = `rgba(0, 242, 254, ${lineAlpha})`;
+                ctx.lineWidth = 1.4;
+              } else {
+                ctx.strokeStyle = `rgba(79, 172, 254, ${lineAlpha})`;
+                ctx.lineWidth = 0.8;
+              }
+            } else {
+              ctx.strokeStyle = `rgba(79, 172, 254, ${lineAlpha})`;
+              ctx.lineWidth = 0.8;
+            }
+
+            // Render curved string line
+            ctx.moveTo(stars[i].x, stars[i].y);
+            ctx.quadraticCurveTo(midX, midY, stars[j].x, stars[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 2. Update and Draw All Stars
+      stars.forEach(star => {
+        star.update();
+        star.draw();
+      });
+
+      requestAnimationFrame(animateCanvas);
+    }
+    animateCanvas();
+
+    // Typewriter Text Effect (Updated to include Terms & Conditions)
+    const text = "Access Wi-Fi networks, house cleaning rules, rubbish collection schedules, Terms & Conditions, and agreement downloads...";
+    let index = 0;
+    function type() {
+      if (index < text.length) {
+        document.getElementById('typewriter').textContent += text.charAt(index);
+        index++;
+        setTimeout(type, 35);
+      }
+    }
+    setTimeout(type, 600);
+
+    // Mouse Movement Tracking for Card Radial Glow
+    const card = document.getElementById('interactiveCard');
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+      const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+      card.style.setProperty('--mouse-x', `${x}%`);
+      card.style.setProperty('--mouse-y', `${y}%`);
+    });
+
+    // Ripple Click Effect on Button
+    const btn = document.getElementById('enterBtn');
+    btn.addEventListener('click', function(e) {
+      const rect = this.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const ripple = document.createElement('span');
+      ripple.classList.add('click-ripple');
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      this.appendChild(ripple);
+      
+      setTimeout(() => { ripple.remove(); }, 600);
+    });
+  </script>
+</body>
+</html>

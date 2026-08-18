@@ -26,13 +26,6 @@ house-hub/
 └── files/            # PDF documents & agreements
 
 
-
-
-
-
-
----
-
 ## 👤 Author & Copyright
 
 Designed and developed by **Sumit**.

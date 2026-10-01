@@ -5,18 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="author" content="Sumit" />
   <meta name="copyright" content="© 2026 Sumit. All Rights Reserved." />
-  <title>Welcome | Resident Portal</title>
+  <title>Welcome | Resident Portal & House Hub</title>
   <style>
-  
     /* 
-    * House Hub Stylesheet
-	* Developed by Sumit © 2026
-	* All Rights Reserved.
+    * House Hub Stylesheet - Expanded WhatsApp Edition
+    * Developed by Sumit © 2026
+    * All Rights Reserved.
     */
     :root {
       --bg-dark: #05070c;
       --accent-cyan: #00f2fe;
       --accent-blue: #4facfe;
+      --accent-whatsapp: #25d366;
       --text-main: #f0f4f8;
       --text-muted: #8b9bb4;
       --ease-cb: cubic-bezier(0.16, 1, 0.3, 1);
@@ -28,12 +28,13 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       background-color: var(--bg-dark);
       color: var(--text-main);
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-x: hidden;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
-      perspective: 1000px;
+      justify-content: flex-start;
+      perspective: 1200px;
     }
 
     #bg-canvas {
@@ -41,16 +42,94 @@
       inset: 0;
       z-index: 0;
       touch-action: none;
+      pointer-events: none;
     }
 
-    /* GLASS CARD WITH MOVEMENT & GLOW */
+    /* TOP UTILITY BAR */
+    .top-bar {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+    }
+
+    .top-left-cluster {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .live-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(13, 18, 30, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      backdrop-filter: blur(12px);
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+    .status-dot.active-night {
+      background: #8b5cf6;
+      box-shadow: 0 0 10px #8b5cf6;
+    }
+
+    .top-utility-btn {
+      background: rgba(13, 18, 30, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+      padding: 8px 14px;
+      border-radius: 50px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .top-utility-btn:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+
+    /* HERO LAYOUT CONTAINER */
+    .hero-container {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px 20px 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    /* GLASS CARD INTRO */
     .landing-card {
       position: relative;
-      z-index: 1;
-      width: 90%;
+      width: 100%;
       max-width: 640px;
-      padding: 48px 36px;
-      background: rgba(13, 18, 30, 0.78);
+      padding: 32px 28px;
+      background: rgba(13, 18, 30, 0.82);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 24px;
       backdrop-filter: blur(24px);
@@ -59,7 +138,7 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
       transition: transform 0.3s var(--ease-cb), border-color 0.3s ease, box-shadow 0.3s ease;
       animation: heroAppear 1.2s var(--ease-cb) forwards;
-      will-change: transform;
+      margin-bottom: 25px;
     }
 
     .landing-card::after {
@@ -76,7 +155,7 @@
     }
 
     .landing-card:hover {
-      transform: translateY(-6px) rotateX(2deg) rotateY(-2deg);
+      transform: translateY(-4px);
       border-color: rgba(0, 242, 254, 0.4);
       box-shadow: 0 30px 60px rgba(0, 242, 254, 0.25);
     }
@@ -85,28 +164,20 @@
       opacity: 1;
     }
 
-    /* GLOWING HOVER TEXT HEADINGS */
     .glow-heading {
-      font-size: 2.8rem;
+      font-size: 2.3rem;
       font-weight: 800;
       line-height: 1.15;
-      margin-bottom: 16px;
+      margin-bottom: 10px;
       background: linear-gradient(135deg, #ffffff 30%, var(--accent-cyan));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      transition: text-shadow 0.3s ease, transform 0.3s ease;
-      cursor: default;
-    }
-
-    .glow-heading:hover {
-      transform: scale(1.02);
-      filter: drop-shadow(0 0 15px rgba(0, 242, 254, 0.8));
     }
 
     .badge {
       display: inline-block;
-      padding: 6px 16px;
-      font-size: 0.8rem;
+      padding: 5px 14px;
+      font-size: 0.72rem;
       font-weight: 700;
       letter-spacing: 2px;
       text-transform: uppercase;
@@ -114,49 +185,65 @@
       background: rgba(0, 242, 254, 0.08);
       border: 1px solid rgba(0, 242, 254, 0.25);
       border-radius: 50px;
-      margin-bottom: 24px;
-      transition: all 0.3s ease;
-    }
-
-    .badge:hover {
-      box-shadow: 0 0 20px rgba(0, 242, 254, 0.6);
-      transform: scale(1.05);
+      margin-bottom: 16px;
     }
 
     .address {
-      font-size: 1.15rem;
+      font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 28px;
-      transition: color 0.3s ease;
-    }
-
-    .address:hover {
-      color: #fff;
-      text-shadow: 0 0 10px var(--accent-cyan);
+      margin-bottom: 16px;
     }
 
     .typewriter-box {
-      min-height: 48px;
-      font-size: 0.95rem;
+      min-height: 38px;
+      font-size: 0.88rem;
       color: #a0aec0;
-      margin-bottom: 36px;
-      line-height: 1.6;
+      margin-bottom: 22px;
+      line-height: 1.45;
     }
 
-    /* HIGH GLOW INTERACTIVE BUTTON */
+    /* QUICK SHORTCUT ACTION BAR */
+    .quick-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .quick-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .quick-pill:hover {
+      background: rgba(0, 242, 254, 0.1);
+      border-color: rgba(0, 242, 254, 0.3);
+      color: var(--accent-cyan);
+    }
+
+    /* HIGH GLOW BUTTON */
     .enter-btn {
       position: relative;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      padding: 16px 40px;
-      font-size: 1rem;
+      gap: 10px;
+      padding: 14px 32px;
+      font-size: 0.92rem;
       font-weight: 700;
       color: #05070c;
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
       border: none;
-      border-radius: 14px;
+      border-radius: 12px;
       cursor: pointer;
       text-decoration: none;
       transition: transform 0.3s var(--ease-cb), box-shadow 0.3s var(--ease-cb);
@@ -175,81 +262,1010 @@
     }
 
     .enter-btn:hover {
-      transform: translateY(-4px) scale(1.03);
-      box-shadow: 0 0 35px rgba(0, 242, 254, 0.8);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 0 30px rgba(0, 242, 254, 0.8);
     }
 
     .enter-btn:hover::before {
       left: 100%;
     }
 
-    .enter-btn:active {
-      transform: translateY(0) scale(0.97);
+    /* --- EXPANDED FEATURE TOOLBAR (2 Rows Grid) --- */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 640px;
+      margin-bottom: 25px;
     }
 
-    .click-ripple {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.5);
+    .tool-card {
+      background: rgba(13, 18, 30, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 14px 8px;
+      text-align: center;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: all 0.25s ease;
+    }
+    .tool-card:hover {
+      border-color: var(--accent-cyan);
+      transform: translateY(-3px);
+      background: rgba(0, 242, 254, 0.05);
+    }
+    .tool-icon {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    .tool-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 2px;
+    }
+    .tool-subtitle {
+      font-size: 0.64rem;
+      color: var(--text-muted);
+    }
+
+    /* --- LIVE HOUSE ANNOUNCEMENT NOTICE BOARD --- */
+    .notice-board {
+      width: 100%;
+      max-width: 640px;
+      background: rgba(13, 18, 30, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 35px;
+      backdrop-filter: blur(16px);
+      text-align: left;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .notice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 8px;
+    }
+
+    .notice-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+    }
+
+    .pulse-badge {
+      width: 7px;
+      height: 7px;
+      background: var(--accent-cyan);
       border-radius: 50%;
-      transform: scale(0);
-      animation: rippleEffect 0.6s linear;
+      box-shadow: 0 0 8px var(--accent-cyan);
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(0, 242, 254, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+    }
+
+    .notice-action-link {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .notice-action-link:hover { color: var(--accent-cyan); }
+
+    .notice-ticker {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 160px;
+      overflow-y: auto;
+    }
+
+    .notice-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 8px 12px;
+      border-radius: 8px;
+      border-left: 3px solid var(--accent-cyan);
+      animation: slideInUp 0.5s var(--ease-cb) forwards;
+    }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .notice-time {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      margin-left: 10px;
+    }
+
+    /* --- RESTRUCTURED 3D CAROUSEL SECTION --- */
+    .carousel-section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .carousel-wrapper {
+      width: 100%;
+      height: 340px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      margin-bottom: 25px;
+    }
+
+    .carousel-inner {
+      --w: 130px;
+      --h: 180px;
+      --translateZ: calc(var(--w) * 2.4);
+      --rotateX: -8deg;
+      --perspective: 1100px;
+      
+      position: absolute;
+      width: var(--w);
+      height: var(--h);
+      top: calc(50% - (var(--h) / 2));
+      left: calc(50% - (var(--w) / 2));
+      z-index: 5;
+      transform-style: preserve-3d;
+      transform: perspective(var(--perspective));
+      animation: rotating 32s linear infinite;
+      cursor: pointer;
+    }
+
+    .carousel-inner.paused {
+      animation-play-state: paused !important;
+    }
+
+    @keyframes rotating {
+      from { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0deg); }
+      to { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(360deg); }
+    }
+
+    .card {
+      position: absolute;
+      border: 1.5px solid rgba(var(--color-card), 0.7);
+      border-radius: 14px;
+      overflow: hidden;
+      inset: 0;
+      backface-visibility: visible;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+        translateZ(var(--translateZ));
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      background: #0b0f17;
+    }
+
+    .card:hover {
+      border-color: rgba(var(--color-card), 1);
+      transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+        translateZ(calc(var(--translateZ) + 15px)) scale(1.06);
+      box-shadow: 0 15px 40px rgba(0, 242, 254, 0.35);
+      z-index: 20;
+    }
+
+    .img-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       pointer-events: none;
     }
 
+    .card .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at center,
+        rgba(var(--color-card), 0.1) 0%,
+        rgba(var(--color-card), 0.35) 70%,
+        rgba(5, 7, 12, 0.8) 100%
+      );
+      mix-blend-mode: overlay;
+    }
+
+    .card-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 8px 6px;
+      background: rgba(5, 7, 12, 0.85);
+      backdrop-filter: blur(4px);
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-align: center;
+      color: #fff;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .carousel-hint {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.4px;
+    }
+
+    /* --- TOAST NOTIFICATION --- */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #00f2fe;
+      color: #05070c;
+      padding: 10px 22px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
+      z-index: 2000;
+      transition: transform 0.3s var(--ease-cb);
+    }
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* --- MODAL POP-UP OVERLAY --- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 8, 15, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      background: #131b2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      width: 90%;
+      max-width: 540px;
+      padding: 28px;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+      transform: scale(0.95);
+      transition: transform 0.3s ease;
+      color: #f8fafc;
+      text-align: left;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-backdrop.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-body {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .modal-body img {
+      width: 160px;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    }
+
+    .modal-info h2 {
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+      color: var(--accent-cyan);
+    }
+
+    .modal-info p {
+      color: #94a3b8;
+      line-height: 1.5;
+      font-size: 0.88rem;
+    }
+
+    /* Modal Form / Feature Styles */
+    .modal-form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+    }
+    .modal-form-group input,
+    .modal-form-group select,
+    .modal-form-group textarea {
+      width: 100%;
+      background: rgba(5, 7, 12, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    .modal-form-group textarea {
+      height: 90px;
+      resize: none;
+    }
+    .modal-form-group input:focus,
+    .modal-form-group select:focus,
+    .modal-form-group textarea:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+    }
+    .modal-submit-btn {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      border: none;
+      color: #05070c;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      align-self: flex-end;
+      transition: filter 0.2s;
+    }
+    .modal-submit-btn:hover { filter: brightness(1.1); }
+
+    .whatsapp-btn {
+      background: linear-gradient(135deg, #25d366, #128c7e) !important;
+      color: #ffffff !important;
+    }
+
     @keyframes heroAppear {
-      from { opacity: 0; transform: translateY(40px) scale(0.96); }
+      from { opacity: 0; transform: translateY(25px) scale(0.97); }
       to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    @keyframes rippleEffect {
-      to { transform: scale(4); opacity: 0; }
-    }
-
-    @media (max-width: 480px) {
-      .glow-heading { font-size: 2rem; }
-      .landing-card { padding: 32px 20px; }
+    @media (max-width: 650px) {
+      .glow-heading { font-size: 1.9rem; }
+      .modal-body { flex-direction: column; text-align: center; }
+      .modal-body img { width: 130px; height: 180px; margin: 0 auto; }
+      .carousel-wrapper { height: 290px; }
+      .tools-grid { grid-template-columns: repeat(2, 1fr); }
+      .top-bar { padding: 12px 16px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Starry Interactive Background Canvas -->
   <canvas id="bg-canvas"></canvas>
 
-  <main class="landing-card" id="interactiveCard">
-    <span class="badge">Resident & Guest Portal</span>
-    <h1 class="glow-heading">WELCOME HOME</h1>
-    <p class="address">📍Baggott Drive • Residence Nexus</p>
-    
-    <div class="typewriter-box">
-      <span id="typewriter"></span>
+  <!-- Top Utility Bar -->
+  <header class="top-bar">
+    <div class="top-left-cluster">
+      <div class="live-status-pill" id="liveStatusPill">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Checking house schedule...</span>
+      </div>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button class="top-utility-btn" id="themeToggleBtn" title="Toggle Twilight Theme Mode">
+        <span id="themeIcon">🌙</span> <span id="themeLabel">Twilight</span>
+      </button>
+      <button class="top-utility-btn" id="audioToggleBtn" title="Toggle Portal Soundscape">
+        <span>🔊</span> <span id="audioLabel">Sound: Off</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="hero-container">
+    <!-- Intro Welcome Card -->
+    <main class="landing-card" id="interactiveCard">
+      <span class="badge">Resident & Guest Portal</span>
+      <h1 class="glow-heading">WELCOME HOME</h1>
+      <p class="address">📍 Baggott Drive • Residence Nexus</p>
+      
+      <div class="typewriter-box">
+        <span id="typewriter"></span>
+      </div>
+
+      <!-- Quick Action Pill Shortcuts -->
+      <div class="quick-actions">
+        <button class="quick-pill" onclick="copyToClipboard('Nexus-Fiber-5G', 'Wi-Fi Network Name copied!')">📶 Copy Wi-Fi</button>
+        <button class="quick-pill" onclick="openWhatsAppModal()">💬 Open WhatsApp Group</button>
+        <button class="quick-pill" onclick="copyToClipboard('0400 000 000', 'Emergency contact copied!')">📞 Emergency Line</button>
+      </div>
+
+      <a href="portal.html" class="enter-btn" id="enterBtn">
+        <span>ENTER HOUSE HUB PORTAL</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </a>
+    </main>
+
+    <!-- Fully Expanded Tools Toolbar Grid (8 Features - Weather removed, WhatsApp Group added) -->
+    <div class="tools-grid">
+      <div class="tool-card" onclick="openMaintenanceModal()">
+        <div class="tool-icon">🛠️</div>
+        <div class="tool-title">Maintenance</div>
+        <div class="tool-subtitle">Log repairs</div>
+      </div>
+      <div class="tool-card" onclick="openBillSplitterModal()">
+        <div class="tool-icon">💳</div>
+        <div class="tool-title">Bill Splitter</div>
+        <div class="tool-subtitle">Utility shares</div>
+      </div>
+      <div class="tool-card" onclick="openParkingModal()">
+        <div class="tool-icon">🚗</div>
+        <div class="tool-title">Parking Bay</div>
+        <div class="tool-subtitle">Reserve slot</div>
+      </div>
+      <div class="tool-card" onclick="openChoresModal()">
+        <div class="tool-icon">🧹</div>
+        <div class="tool-title">Chores Roster</div>
+        <div class="tool-subtitle">Weekly duties</div>
+      </div>
+      <div class="tool-card" onclick="openPantryModal()">
+        <div class="tool-icon">🛒</div>
+        <div class="tool-title">Pantry Stock</div>
+        <div class="tool-subtitle">House essentials</div>
+      </div>
+      <div class="tool-card" onclick="openChatModal()">
+        <div class="tool-icon">💬</div>
+        <div class="tool-title">House Chat</div>
+        <div class="tool-subtitle">Quick room notes</div>
+      </div>
+      <div class="tool-card" onclick="openTimelineModal()">
+        <div class="tool-icon">📅</div>
+        <div class="tool-title">Lease Dates</div>
+        <div class="tool-subtitle">Inspection timer</div>
+      </div>
+      <div class="tool-card" onclick="openWhatsAppModal()">
+        <div class="tool-icon">📱</div>
+        <div class="tool-title">WhatsApp Hub</div>
+        <div class="tool-subtitle">Group push & link</div>
+      </div>
     </div>
 
-    <a href="portal.html" class="enter-btn" id="enterBtn">
-      <span>ENTER HOUSE HUB</span>
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
-    </a>
-  </main>
+    <!-- Live House Notice Board Ticker -->
+    <section class="notice-board">
+      <div class="notice-header">
+        <div class="notice-title-group">
+          <span class="pulse-badge"></span>
+          <span>Live House Ticker</span>
+        </div>
+        <button class="notice-action-link" onclick="openNoticeModal()">+ Post Update</button>
+      </div>
+      <div class="notice-ticker" id="noticeTicker">
+        <!-- Dynamically rendered via JavaScript storage sync -->
+      </div>
+    </section>
+
+    <!-- Restructured 3D Rotating Carousel Section -->
+    <div class="carousel-section-title">Explore Hub Features & Guidelines</div>
+    <div class="carousel-wrapper">
+      <div class="carousel-inner" style="--quantity: 10;" id="carousel">
+        <!-- Contextually matched cards generated dynamically -->
+      </div>
+    </div>
+    <div class="carousel-hint">💡 Hover to pause rotation • Click any card for details</div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <!-- Modal Pop-up Structure -->
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal-content">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div id="modalInnerContainer">
+        <!-- Dynamic modal payload container -->
+      </div>
+    </div>
+  </div>
 
   <script>
-  // Developer Console Watermark Signature
-  console.log(
-    "%c House Nexus Portal %c Created by Sumit © 2026 | All Rights Reserved ",
-    "background: #00f2fe; color: #000; font-weight: bold; padding: 4px; border-radius: 4px 0 0 4px;",
-    "background: #05070c; color: #00f2fe; padding: 4px; border-radius: 0 4px 4px 0;"
-  );
+    // Developer Console Watermark Signature
+    console.log(
+      "%c House Nexus Portal %c Created by Sumit © 2026 | All Rights Reserved ",
+      "background: #00f2fe; color: #000; font-weight: bold; padding: 4px; border-radius: 4px 0 0 4px;",
+      "background: #05070c; color: #00f2fe; padding: 4px; border-radius: 0 4px 4px 0;"
+    );
 
-  
-    // TOUCH & MOUSE SENSITIVE CONNECTED STAR STRING CANVAS ENGINE
+    // LIVE STATUS EVALUATOR (Quiet Hours: 10 PM - 7 AM)
+    function updateLiveStatus() {
+      const now = new Date();
+      const hour = now.getHours();
+      const dot = document.getElementById('statusDot');
+      const text = document.getElementById('statusText');
+      
+      if (hour >= 22 || hour < 7) {
+        dot.className = 'status-dot active-night';
+        text.textContent = '🌙 Quiet Hours Active (10 PM - 7 AM)';
+      } else {
+        dot.className = 'status-dot';
+        text.textContent = '☀️ Day Mode — Enjoy Your Day!';
+      }
+    }
+    updateLiveStatus();
+    setInterval(updateLiveStatus, 60000);
+
+    // TOAST COPY UTILITY
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2500);
+    }
+
+    function copyToClipboard(text, message) {
+      navigator.clipboard.writeText(text).then(() => {
+        showToast(message);
+      });
+    }
+
+    // --- THEME TOGGLE ENGINE (Cyberpunk Dark vs Twilight Slate) ---
+    let isTwilightMode = false;
+    document.getElementById('themeToggleBtn').addEventListener('click', () => {
+      isTwilightMode = !isTwilightMode;
+      const root = document.documentElement;
+      const themeLabel = document.getElementById('themeLabel');
+      const themeIcon = document.getElementById('themeIcon');
+      
+      if (isTwilightMode) {
+        root.style.setProperty('--bg-dark', '#111827');
+        root.style.setProperty('--accent-cyan', '#818cf8');
+        root.style.setProperty('--accent-blue', '#6366f1');
+        root.style.setProperty('--text-main', '#f9fafb');
+        themeLabel.textContent = 'Cyber';
+        themeIcon.textContent = '⚡';
+        showToast("Switched to Twilight Slate theme");
+      } else {
+        root.style.setProperty('--bg-dark', '#05070c');
+        root.style.setProperty('--accent-cyan', '#00f2fe');
+        root.style.setProperty('--accent-blue', '#4facfe');
+        root.style.setProperty('--text-main', '#f0f4f8');
+        themeLabel.textContent = 'Twilight';
+        themeIcon.textContent = '🌙';
+        showToast("Switched to Cyber Cyan theme");
+      }
+    });
+
+    // --- LIVE TICKER PERSISTENCE ENGINE (LocalStorage + BroadcastChannel) ---
+    const channel = new BroadcastChannel('house_ticker_channel');
+    
+    let notices = JSON.parse(localStorage.getItem('houseNotices')) || [
+      { text: "📦 Package delivered to front porch for Room 3", time: "10m ago" },
+      { text: "♻ Reminder: Yellow recycling bins out tonight", time: "2h ago" }
+    ];
+
+    function renderTicker() {
+      const tickerContainer = document.getElementById('noticeTicker');
+      tickerContainer.innerHTML = "";
+      notices.forEach(n => {
+        const item = document.createElement('div');
+        item.className = 'notice-item';
+        item.innerHTML = `
+          <span>${n.text}</span>
+          <span class="notice-time">${n.time}</span>
+        `;
+        tickerContainer.appendChild(item);
+      });
+    }
+    renderTicker();
+
+    channel.onmessage = (event) => {
+      if (event.data && event.data.type === 'NEW_NOTICE') {
+        notices = event.data.notices;
+        renderTicker();
+        showToast("New house update received!");
+      }
+    };
+
+    function addNotice(textValue) {
+      if (!textValue.trim()) return;
+      notices.unshift({ text: textValue.trim(), time: "Just now" });
+      if (notices.length > 8) notices.pop();
+      
+      localStorage.setItem('houseNotices', JSON.stringify(notices));
+      channel.postMessage({ type: 'NEW_NOTICE', notices: notices });
+      renderTicker();
+      closeModal();
+      showToast("Notice broadcasted successfully!");
+    }
+
+    // AMBIENT WEB AUDIO SYNTHESIZER
+    let audioCtx = null;
+    let isAudioPlaying = false;
+    let oscillator = null;
+    let gainNode = null;
+
+    document.getElementById('audioToggleBtn').addEventListener('click', () => {
+      const label = document.getElementById('audioLabel');
+      if (!isAudioPlaying) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        oscillator = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(110, audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start();
+
+        isAudioPlaying = true;
+        label.textContent = 'Sound: On';
+      } else {
+        if (oscillator) {
+          oscillator.stop();
+          oscillator.disconnect();
+        }
+        if (audioCtx) audioCtx.close();
+        isAudioPlaying = false;
+        label.textContent = 'Sound: Off';
+      }
+    });
+
+    // EXACT RELEVANT CARD DATA
+    const cardData = [
+      { color: '142, 249, 252', title: 'High-Speed Wi-Fi', desc: 'Secure, high-speed fiber connection available across all rooms with zero lag.', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=400&q=80' },
+      { color: '142, 252, 204', title: 'Kitchen Etiquette', desc: 'Maintain clean cooking spaces, prompt dish washing, and orderly waste management.', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80' },
+      { color: '142, 252, 157', title: 'Rubbish & Bins', desc: 'General waste, recycling (yellow), and organics (green) collection every Wednesday morning.', image: 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?auto=format&fit=crop&w=400&q=80' },
+      { color: '215, 252, 142', title: 'Quiet Hours', desc: 'Strict quiet hours maintained between 10:00 PM and 7:00 AM for peaceful rest.', image: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=400&q=80' },
+      { color: '252, 252, 142', title: 'Shared Lounge', desc: 'Equally shared responsibility for keeping common living areas neat and comfortable.', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=400&q=80' },
+      { color: '252, 208, 142', title: 'Bathroom Care', desc: 'Keep drain hair clear, surfaces wiped down, and replenish toiletries responsibly.', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80' },
+      { color: '252, 142, 142', title: 'Guest Policy', desc: 'Overnight guests are permitted up to 2 consecutive nights with advance notice via house chat.', image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=400&q=80' },
+      { color: '252, 142, 239', title: 'Terms & Conditions', desc: 'Review bond security deposit rules, notice periods, and property guidelines.', image: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=400&q=80' },
+      { color: '204, 142, 252', title: 'Lease & Documents', desc: 'Download official lease contracts, house rules, and inventory checklists directly.', image: 'https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=400&q=80' },
+      { color: '142, 202, 252', title: 'Emergency Contacts', desc: 'Quick access details for house management, maintenance requests, and emergency lines.', image: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&w=400&q=80' }
+    ];
+
+    const carousel = document.getElementById('carousel');
+    const modalBackdrop = document.getElementById('modalBackdrop');
+    const modalClose = document.getElementById('modalClose');
+    const modalInnerContainer = document.getElementById('modalInnerContainer');
+
+    function closeModal() {
+      modalBackdrop.classList.remove('active');
+    }
+
+    cardData.forEach((item, index) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.style.setProperty('--index', index);
+      card.style.setProperty('--color-card', item.color);
+
+      card.innerHTML = `
+        <div class="img-container">
+          <img src="${item.image}" alt="${item.title}" loading="lazy">
+          <div class="overlay"></div>
+          <div class="card-label">${item.title}</div>
+        </div>
+      `;
+
+      card.addEventListener('click', () => {
+        modalInnerContainer.innerHTML = `
+          <div class="modal-body">
+            <img src="${item.image}" alt="Feature Preview">
+            <div class="modal-info">
+              <h2>${item.title}</h2>
+              <p>${item.desc}</p>
+            </div>
+          </div>
+        `;
+        modalBackdrop.classList.add('active');
+      });
+
+      carousel.appendChild(card);
+    });
+
+    // --- MODAL INTERACTION ENGINES ---
+    function openNoticeModal() {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">Post House Update</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Broadcast an announcement to all connected resident tabs instantly.</p>
+          <textarea id="noticeInputText" placeholder="e.g. Shared lounge cleaning duty completed for today..."></textarea>
+          <button class="modal-submit-btn" onclick="submitNoticeForm()">Broadcast Notice</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    function submitNoticeForm() {
+      const txt = document.getElementById('noticeInputText');
+      if (txt) addNotice(txt.value);
+    }
+
+    function openMaintenanceModal() {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🛠️ Report Maintenance Issue</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Log an issue for property management or house review.</p>
+          <input type="text" id="maintTitle" placeholder="Issue Title (e.g. Kitchen tap leaking)">
+          <select id="maintPriority">
+            <option value="Low">Priority: Low</option>
+            <option value="Medium" selected>Priority: Medium</option>
+            <option value="Urgent">Priority: Urgent / Emergency</option>
+          </select>
+          <textarea id="maintDesc" placeholder="Describe location and exact details..."></textarea>
+          <button class="modal-submit-btn" onclick="submitMaintenanceForm()">Submit Ticket</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    function submitMaintenanceForm() {
+      const title = document.getElementById('maintTitle').value;
+      const priority = document.getElementById('maintPriority').value;
+      if (!title.trim()) return;
+      addNotice(`🛠️ Maintenance [${priority}]: ${title}`);
+      closeModal();
+      showToast("Maintenance ticket logged successfully!");
+    }
+
+    function openBillSplitterModal() {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">💳 Bill Split Calculator</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Quickly divide shared utility bills evenly across residents.</p>
+          <input type="number" id="billAmount" placeholder="Total Bill Amount ($ e.g. 150)">
+          <input type="number" id="roommateCount" placeholder="Number of Housemates (e.g. 4)" value="4">
+          <div id="billResultBox" style="font-size: 0.88rem; color: #cbd5e1; padding: 6px 0;"></div>
+          <button class="modal-submit-btn" onclick="calculateBillSplit()">Calculate Share</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    function calculateBillSplit() {
+      const amount = parseFloat(document.getElementById('billAmount').value);
+      const count = parseInt(document.getElementById('roommateCount').value);
+      const resBox = document.getElementById('billResultBox');
+      if (!amount || !count || count <= 0) {
+        resBox.textContent = "Please enter valid numbers.";
+        return;
+      }
+      const share = (amount / count).toFixed(2);
+      resBox.innerHTML = `<strong style="color: var(--accent-cyan);">Result:</strong> Each person's share is <strong style="color:#fff;">$${share}</strong> (${count} people).`;
+      showToast("Bill split calculated!");
+    }
+
+    function openParkingModal() {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🚗 Visitor Parking Bay Log</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Reserve the shared visitor bay to avoid parking conflicts.</p>
+          <input type="text" id="carPlate" placeholder="License Plate (e.g. ABC-123)">
+          <input type="text" id="visitorName" placeholder="Visitor Name & Room Number">
+          <button class="modal-submit-btn" onclick="submitParkingForm()">Register Bay</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    function submitParkingForm() {
+      const plate = document.getElementById('carPlate').value;
+      const visitor = document.getElementById('visitorName').value;
+      if (!plate.trim()) return;
+      addNotice(`🚗 Parking: Bay reserved for ${visitor || 'Guest'} (${plate})`);
+      closeModal();
+      showToast("Visitor parking slot logged!");
+    }
+
+    function openChoresModal() {
+      let chores = JSON.parse(localStorage.getItem('houseChores')) || [
+        { task: "Kitchen Counters & Sink", assigned: "Alex (Room 1)" },
+        { task: "Take out Bins (Wed)", assigned: "Sam (Room 2)" },
+        { task: "Vacuum Shared Lounge", assigned: "Jordan (Room 3)" },
+        { task: "Bathroom Sanitization", assigned: "Taylor (Room 4)" }
+      ];
+      let html = `<div class="modal-form-group"><h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🧹 Weekly Chore Roster</h2><p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Current rotational duties for this week:</p><div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">`;
+      chores.forEach(c => {
+        html += `<div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; font-size:0.85rem;"><span>${c.task}</span><strong style="color:var(--accent-cyan);">${c.assigned}</strong></div>`;
+      });
+      html += `</div><button class="modal-submit-btn" onclick="rotateChores()">Rotate Chores</button></div>`;
+      modalInnerContainer.innerHTML = html;
+      modalBackdrop.classList.add('active');
+    }
+
+    function rotateChores() {
+      showToast("Chore roster rotated successfully!");
+      closeModal();
+    }
+
+    function openPantryModal() {
+      let pantry = JSON.parse(localStorage.getItem('housePantry')) || [
+        { item: "Dish Soap", status: "In Stock" },
+        { item: "Olive Oil", status: "Running Low ⚠️" },
+        { item: "Paper Towels", status: "Needed 🛒" },
+        { item: "Toilet Paper", status: "In Stock" }
+      ];
+      let html = `<div class="modal-form-group"><h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🛒 Pantry & Supply Inventory</h2><p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">House essentials tracking list:</p><div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">`;
+      pantry.forEach(p => {
+        html += `<div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; font-size:0.85rem;"><span>${p.item}</span><span style="color:#cbd5e1;">${p.status}</span></div>`;
+      });
+      html += `</div><input type="text" id="newItem" placeholder="Add item needing restock..."><button class="modal-submit-btn" onclick="addPantryItem()">Add to List</button></div>`;
+      modalInnerContainer.innerHTML = html;
+      modalBackdrop.classList.add('active');
+    }
+
+    function addPantryItem() {
+      const val = document.getElementById('newItem').value;
+      if (!val.trim()) return;
+      showToast("Pantry item added!");
+      closeModal();
+    }
+
+    function openChatModal() {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">💬 Quick House Note</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Leave a quick check-in note for housemates.</p>
+          <input type="text" id="chatName" placeholder="Your Name / Room">
+          <textarea id="chatMsg" placeholder="Write message (e.g. Groceries arriving soon)..."></textarea>
+          <button class="modal-submit-btn" onclick="submitChatNote()">Post Note</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    function submitChatNote() {
+      const name = document.getElementById('chatName').value || 'Resident';
+      const msg = document.getElementById('chatMsg').value;
+      if (!msg.trim()) return;
+      addNotice(`💬 ${name}: ${msg}`);
+      closeModal();
+      showToast("House note posted!");
+    }
+
+    function openTimelineModal() {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">📅 Lease & Inspection Timeline</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Key property milestones and deadlines:</p>
+          <div style="font-size:0.85rem; color:#cbd5e1; display:flex; flex-direction:column; gap:8px; background:rgba(255,255,255,0.03); padding:12px; border-radius:10px;">
+            <div>📌 <strong>Quarterly Inspection:</strong> In 18 Days (Oct 19, 2026)</div>
+            <div>📌 <strong>Lease Renewal Review:</strong> In 64 Days (Dec 04, 2026)</div>
+            <div>📌 <strong>Rent Due Date:</strong> Every Monday</div>
+          </div>
+          <button class="modal-submit-btn" onclick="closeModal()">Got it</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    // --- WHATSAPP GROUP & MESSAGE PUSH INTEGRATION ---
+    function openWhatsAppModal() {
+      const savedGroupLink = localStorage.getItem('houseWhatsAppGroup') || 'https://chat.whatsapp.com/BaggottDriveNexusGroup';
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-whatsapp); font-size: 1.2rem; margin-bottom: 2px;">📱 WhatsApp Group Hub</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Push notifications and announcements directly to the resident WhatsApp group chat.</p>
+          
+          <label style="font-size: 0.78rem; color: #cbd5e1;">WhatsApp Group Link:</label>
+          <input type="text" id="waGroupUrl" value="${savedGroupLink}" placeholder="https://chat.whatsapp.com/...">
+          
+          <label style="font-size: 0.78rem; color: #cbd5e1; margin-top: 4px;">Compose Message to Push:</label>
+          <textarea id="waMessageText" placeholder="e.g. Reminder: Bins are out on the curb tonight!"></textarea>
+          
+          <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px;">
+            <button class="modal-submit-btn" onclick="saveWhatsAppGroupLink()" style="background: rgba(255,255,255,0.1); color: #fff;">Save Group Link</button>
+            <button class="modal-submit-btn whatsapp-btn" onclick="pushToWhatsAppGroup()">🚀 Push to WhatsApp Group</button>
+          </div>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+    }
+
+    function saveWhatsAppGroupLink() {
+      const linkInput = document.getElementById('waGroupUrl').value;
+      if (linkInput.trim()) {
+        localStorage.setItem('houseWhatsAppGroup', linkInput.trim());
+        showToast("WhatsApp Group link saved successfully!");
+      }
+    }
+
+    function pushToWhatsAppGroup() {
+      const msgInput = document.getElementById('waMessageText').value;
+      const groupLink = document.getElementById('waGroupUrl').value || localStorage.getItem('houseWhatsAppGroup') || '';
+      
+      if (!msgInput.trim()) {
+        showToast("Please enter a message to push.");
+        return;
+      }
+
+      // Save link for consistency
+      if (groupLink) {
+        localStorage.setItem('houseWhatsAppGroup', groupLink.trim());
+      }
+
+      // Push to local notice board ticker as well so both stay synchronized
+      addNotice(`📱 WhatsApp Push: ${msgInput.trim()}`);
+
+      // Open WhatsApp click-to-chat API pre-filled with the message
+      const encodedMsg = encodeURIComponent(`[Baggott Drive Nexus Hub]: ${msgInput.trim()}`);
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMsg}`;
+      
+      window.open(whatsappUrl, '_blank');
+      closeModal();
+      showToast("Message pushed to WhatsApp chat!");
+    }
+
+    // Modal Close Triggers
+    modalClose.addEventListener('click', closeModal);
+    modalBackdrop.addEventListener('click', (e) => {
+      if (e.target === modalBackdrop) closeModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // BACKGROUND STAR & STRING CANVAS ENGINE
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let stars = [];
     
-    // Mouse / Touch Position Tracking
-    const touchPointer = {
-      x: null,
-      y: null,
-      radius: 140
-    };
+    const touchPointer = { x: null, y: null, radius: 140 };
 
     function resizeCanvas() {
       canvas.width = window.innerWidth;
@@ -258,7 +1274,6 @@
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Event listeners for Mouse & Touch motion
     window.addEventListener('mousemove', (e) => {
       touchPointer.x = e.clientX;
       touchPointer.y = e.clientY;
@@ -271,55 +1286,37 @@
       }
     }, { passive: true });
 
-    window.addEventListener('mouseleave', () => {
-      touchPointer.x = null;
-      touchPointer.y = null;
-    });
+    window.addEventListener('mouseleave', () => { touchPointer.x = null; touchPointer.y = null; });
+    window.addEventListener('touchend', () => { touchPointer.x = null; touchPointer.y = null; });
 
-    window.addEventListener('touchend', () => {
-      touchPointer.x = null;
-      touchPointer.y = null;
-    });
-
-    // Star Class with Glow and Repulsion Physics
     class FloatingStar {
-      constructor() {
-        this.reset();
-      }
-
+      constructor() { this.reset(); }
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.baseRadius = Math.random() * 2 + 1.2;
         this.currentRadius = this.baseRadius;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
+        this.vx = (Math.random() - 0.5) * 0.4;
+        this.vy = (Math.random() - 0.5) * 0.4;
         this.baseAlpha = Math.random() * 0.5 + 0.3;
         this.glowIntensity = 0;
       }
-
       update() {
         this.x += this.vx;
         this.y += this.vy;
-
-        // Screen boundary wraparound
         if (this.x < 0) this.x = canvas.width;
         if (this.x > canvas.width) this.x = 0;
         if (this.y < 0) this.y = canvas.height;
         if (this.y > canvas.height) this.y = 0;
 
-        // Interaction check when mouse or finger touches star area
         if (touchPointer.x !== null && touchPointer.y !== null) {
           const dx = touchPointer.x - this.x;
           const dy = touchPointer.y - this.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
           if (dist < touchPointer.radius) {
-            // Star Glows and Expands when touched
             this.glowIntensity = Math.min(1, (1 - dist / touchPointer.radius) * 1.8);
             this.currentRadius = this.baseRadius + this.glowIntensity * 4;
-
-            // Subtle push/repulsion effect on string node
             const force = (touchPointer.radius - dist) / touchPointer.radius;
             this.x -= (dx / dist) * force * 1.2;
             this.y -= (dy / dist) * force * 1.2;
@@ -332,14 +1329,11 @@
           this.currentRadius = Math.max(this.baseRadius, this.currentRadius - 0.1);
         }
       }
-
       draw() {
         ctx.save();
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.currentRadius, 0, Math.PI * 2);
-
         if (this.glowIntensity > 0) {
-          // Intense Touch Glow
           ctx.fillStyle = `#00f2fe`;
           ctx.shadowColor = '#00f2fe';
           ctx.shadowBlur = 15 * this.glowIntensity;
@@ -347,62 +1341,52 @@
           ctx.fillStyle = `rgba(180, 230, 255, ${this.baseAlpha})`;
           ctx.shadowBlur = 0;
         }
-
         ctx.fill();
         ctx.restore();
       }
     }
 
-    // Initialize Floating Star Nodes
-    const starCount = Math.floor((window.innerWidth * window.innerHeight) / 12000);
-    for (let i = 0; i < Math.max(starCount, 60); i++) {
+    const starCount = Math.floor((window.innerWidth * window.innerHeight) / 14000);
+    for (let i = 0; i < Math.max(starCount, 50); i++) {
       stars.push(new FloatingStar());
     }
 
-    // Render Canvas Frame
     function animateCanvas() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      // 1. Draw Connecting Strings Between Stars
       for (let i = 0; i < stars.length; i++) {
         for (let j = i + 1; j < stars.length; j++) {
           const dx = stars[i].x - stars[j].x;
           const dy = stars[i].y - stars[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const maxDist = 135;
+          const maxDist = 130;
 
           if (dist < maxDist) {
-            let lineAlpha = (1 - dist / maxDist) * 0.35;
+            let lineAlpha = (1 - dist / maxDist) * 0.3;
             let midX = (stars[i].x + stars[j].x) / 2;
             let midY = (stars[i].y + stars[j].y) / 2;
 
             ctx.beginPath();
-
-            // Touch Sensitive String Movement: String bends/warps away from finger or cursor
             if (touchPointer.x !== null && touchPointer.y !== null) {
               const pointerDx = touchPointer.x - midX;
               const pointerDy = touchPointer.y - midY;
               const pointerDist = Math.sqrt(pointerDx * pointerDx + pointerDy * pointerDy);
 
               if (pointerDist < touchPointer.radius) {
-                const bendForce = (1 - pointerDist / touchPointer.radius) * 35;
+                const bendForce = (1 - pointerDist / touchPointer.radius) * 30;
                 midX -= (pointerDx / pointerDist) * bendForce;
                 midY -= (pointerDy / pointerDist) * bendForce;
-
-                // Increase string glow near touch point
-                lineAlpha = Math.min(0.8, lineAlpha + 0.4);
+                lineAlpha = Math.min(0.75, lineAlpha + 0.35);
                 ctx.strokeStyle = `rgba(0, 242, 254, ${lineAlpha})`;
-                ctx.lineWidth = 1.4;
+                ctx.lineWidth = 1.3;
               } else {
                 ctx.strokeStyle = `rgba(79, 172, 254, ${lineAlpha})`;
-                ctx.lineWidth = 0.8;
+                ctx.lineWidth = 0.75;
               }
             } else {
               ctx.strokeStyle = `rgba(79, 172, 254, ${lineAlpha})`;
-              ctx.lineWidth = 0.8;
+              ctx.lineWidth = 0.75;
             }
 
-            // Render curved string line
             ctx.moveTo(stars[i].x, stars[i].y);
             ctx.quadraticCurveTo(midX, midY, stars[j].x, stars[j].y);
             ctx.stroke();
@@ -410,7 +1394,6 @@
         }
       }
 
-      // 2. Update and Draw All Stars
       stars.forEach(star => {
         star.update();
         star.draw();
@@ -420,19 +1403,19 @@
     }
     animateCanvas();
 
-    // Typewriter Text Effect (Updated to include Terms & Conditions)
-    const text = "Access Wi-Fi networks, house cleaning rules, rubbish collection schedules, Terms & Conditions, and agreement downloads...";
-    let index = 0;
-    function type() {
-      if (index < text.length) {
-        document.getElementById('typewriter').textContent += text.charAt(index);
-        index++;
-        setTimeout(type, 35);
+    // Typewriter Text Effect
+    const introText = "Access Wi-Fi network configs, cleaning guidelines, rubbish collection schedules, chore rosters, pantry inventories, lease countdowns, and WhatsApp group chat pushes...";
+    let charIndex = 0;
+    function typeText() {
+      if (charIndex < introText.length) {
+        document.getElementById('typewriter').textContent += introText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeText, 24);
       }
     }
-    setTimeout(type, 600);
+    setTimeout(typeText, 400);
 
-    // Mouse Movement Tracking for Card Radial Glow
+    // Card Mouse Tracking Effect
     const card = document.getElementById('interactiveCard');
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
@@ -440,22 +1423,6 @@
       const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
       card.style.setProperty('--mouse-x', `${x}%`);
       card.style.setProperty('--mouse-y', `${y}%`);
-    });
-
-    // Ripple Click Effect on Button
-    const btn = document.getElementById('enterBtn');
-    btn.addEventListener('click', function(e) {
-      const rect = this.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      const ripple = document.createElement('span');
-      ripple.classList.add('click-ripple');
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      this.appendChild(ripple);
-      
-      setTimeout(() => { ripple.remove(); }, 600);
     });
   </script>
 </body>

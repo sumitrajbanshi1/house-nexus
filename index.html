@@ -35,6 +35,7 @@
       align-items: center;
       justify-content: flex-start;
       perspective: 1200px;
+      padding-top: 75px; /* Added spacing so content isn't clipped by fixed top bar */
     }
 
     #bg-canvas {
@@ -45,16 +46,55 @@
       pointer-events: none;
     }
 
-    /* TOP UTILITY BAR */
+    /* TOP UTILITY BAR (AUTO-HIDING) */
     .top-bar {
-      position: relative;
-      z-index: 10;
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
       width: 100%;
       max-width: 1200px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 20px 24px;
+      padding: 12px 24px;
+      background: rgba(13, 18, 30, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    }
+
+    .top-bar.nav-hidden {
+      transform: translateX(-50%) translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Floating toggle tab to bring the nav back manually */
+    .nav-trigger-pill {
+      position: fixed;
+      top: 12px;
+      right: 16px;
+      z-index: 99;
+      background: rgba(13, 18, 30, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: none;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-trigger-pill.visible {
+      display: inline-flex;
     }
 
     .top-left-cluster {
@@ -69,7 +109,7 @@
       align-items: center;
       gap: 8px;
       padding: 6px 14px;
-      background: rgba(13, 18, 30, 0.75);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: 50px;
       font-size: 0.75rem;
@@ -90,7 +130,7 @@
     }
 
     .top-utility-btn {
-      background: rgba(13, 18, 30, 0.75);
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(255, 255, 255, 0.1);
       color: var(--text-main);
       padding: 8px 14px;
@@ -747,7 +787,27 @@
       .modal-body { flex-direction: column; text-align: center; }
       .modal-body img { width: 130px; height: 180px; margin: 0 auto; }
       .tools-grid { grid-template-columns: repeat(2, 1fr); }
-      .top-bar { padding: 12px 16px; }
+      .top-bar { 
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px 16px;
+        gap: 8px;
+      }
+      body {
+        padding-top: 110px; /* Adjusted padding for stacked mobile header */
+      }
+      .top-left-cluster, 
+      .top-right-cluster {
+        justify-content: center;
+        width: 100%;
+      }
+      .top-utility-btn, .live-status-pill {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+        padding: 7px 10px;
+        font-size: 0.72rem;
+      }
       .carousel-inner { --translateZ: calc(var(--w) * 1.75); }
     }
   </style>
@@ -757,15 +817,20 @@
   <!-- Starry Interactive Background Canvas -->
   <canvas id="bg-canvas"></canvas>
 
+  <!-- Floating Menu Trigger (Appears when nav auto-hides) -->
+  <button class="nav-trigger-pill" id="navTriggerBtn" onclick="toggleNavManually()">
+    <span>⚙️ Menu</span>
+  </button>
+
   <!-- Top Utility Bar -->
-  <header class="top-bar">
+  <header class="top-bar" id="topBar">
     <div class="top-left-cluster">
       <div class="live-status-pill" id="liveStatusPill">
         <span class="status-dot" id="statusDot"></span>
         <span id="statusText">Checking house schedule...</span>
       </div>
     </div>
-    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+    <div class="top-right-cluster" style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
       <button class="top-utility-btn" id="masterLockBtn" onclick="toggleMasterLock()" title="Toggle Master Lock for Protected Sections">
         <span id="masterLockIcon">🔒</span> <span id="masterLockLabel">Master Locked</span>
       </button>
@@ -896,6 +961,34 @@
       "background: #05070c; color: #00f2fe; padding: 4px; border-radius: 0 4px 4px 0;"
     );
 
+    // AUTO-HIDING NAVBAR SCROLL LOGIC
+    let lastScrollY = window.scrollY;
+    const topBar = document.getElementById('topBar');
+    const navTriggerBtn = document.getElementById('navTriggerBtn');
+
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+
+      // Scrolling Down & past 60px -> Hide Nav
+      if (currentScrollY > lastScrollY && currentScrollY > 60) {
+        topBar.classList.add('nav-hidden');
+        navTriggerBtn.classList.add('visible');
+      } 
+      // Scrolling Up -> Show Nav
+      else if (currentScrollY < lastScrollY) {
+        topBar.classList.remove('nav-hidden');
+        navTriggerBtn.classList.remove('visible');
+      }
+
+      lastScrollY = currentScrollY;
+    });
+
+    // Manual toggle trigger from floating button
+    function toggleNavManually() {
+      topBar.classList.toggle('nav-hidden');
+      navTriggerBtn.classList.toggle('visible');
+    }
+
     // GLOBAL UNLOCKED SECTIONS MAP
     const unlockedSections = {
       chores: false,
@@ -906,8 +999,6 @@
     let masterUnlocked = false;
 
     function checkMasterSync() {
-      // Master lock only auto-locks if ALL individual sections are locked together.
-      // Otherwise, individual section changes remain independent.
       const allLocked = !unlockedSections.chores && !unlockedSections.pantry && !unlockedSections.timeline;
       if (allLocked) {
         masterUnlocked = false;
@@ -1025,7 +1116,6 @@
     function toggleSectionLockState(sectionKey, openModalFn) {
       unlockedSections[sectionKey] = !unlockedSections[sectionKey];
       
-      // Only lock the master if ALL sections are locked together
       const allLocked = !unlockedSections.chores && !unlockedSections.pantry && !unlockedSections.timeline;
       if (allLocked) {
         masterUnlocked = false;

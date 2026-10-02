@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="Sumit" />
-  <meta name="copyright" content="© 2026 Sumit. All Rights Reserved." />
+  <meta name="author" content="Sumit Rajbanshi" />
+  <meta name="copyright" content="© 2026 Sumit Rajbanshi. All Rights Reserved." />
   <title>Welcome | Resident Portal & House Hub</title>
   <style>
     /* 
-    * House Hub Stylesheet - Expanded WhatsApp Edition
-    * Developed by Sumit © 2026
+    * House Hub Stylesheet - Uncontained Open 3D Carousel (Spaced Edition) & Clean Ticker
+    * Developed by Sumit Rajbanshi © 2026
     * All Rights Reserved.
     */
     :root {
@@ -116,11 +116,12 @@
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 10px 20px 60px 20px;
+      padding: 10px 20px 40px 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
+      flex: 1;
     }
 
     /* GLASS CARD INTRO */
@@ -310,6 +311,141 @@
       color: var(--text-muted);
     }
 
+    /* --- FULLY OPEN / UNCONTAINED 3D CAROUSEL SECTION (SPACED EDGES) --- */
+    .carousel-section-container {
+      width: 100%;
+      max-width: 640px;
+      background: transparent;
+      border: none;
+      padding: 10px 0 20px 0;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .carousel-section-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent-cyan);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      text-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+    }
+
+    .carousel-wrapper {
+      width: 100%;
+      max-width: 100%;
+      height: 310px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+      margin-bottom: 10px;
+    }
+
+    .carousel-inner {
+      --w: 110px;
+      --h: 160px;
+      --translateZ: calc(var(--w) * 2.15);
+      --rotateX: -6deg;
+      --perspective: 1100px;
+      
+      position: absolute;
+      width: var(--w);
+      height: var(--h);
+      top: calc(50% - (var(--h) / 2));
+      left: calc(50% - (var(--w) / 2));
+      z-index: 5;
+      transform-style: preserve-3d;
+      transform: perspective(var(--perspective));
+      animation: rotating 36s linear infinite;
+      cursor: pointer;
+    }
+
+    .carousel-inner.paused {
+      animation-play-state: paused !important;
+    }
+
+    @keyframes rotating {
+      from { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0deg); }
+      to { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(360deg); }
+    }
+
+    .card {
+      position: absolute;
+      border: 1.5px solid rgba(var(--color-card), 0.75);
+      border-radius: 14px;
+      overflow: hidden;
+      inset: 0;
+      backface-visibility: visible;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.75);
+      transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+        translateZ(var(--translateZ));
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      background: #0b0f17;
+    }
+
+    .card:hover {
+      border-color: rgba(var(--color-card), 1);
+      transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
+        translateZ(calc(var(--translateZ) + 18px)) scale(1.08);
+      box-shadow: 0 18px 45px rgba(0, 242, 254, 0.45);
+      z-index: 20;
+    }
+
+    .img-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+
+    .card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+    }
+
+    .card .overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at center,
+        rgba(var(--color-card), 0.1) 0%,
+        rgba(var(--color-card), 0.35) 70%,
+        rgba(5, 7, 12, 0.8) 100%
+      );
+      mix-blend-mode: overlay;
+    }
+
+    .card-label {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 6px 4px;
+      background: rgba(5, 7, 12, 0.88);
+      backdrop-filter: blur(4px);
+      font-size: 0.62rem;
+      font-weight: 600;
+      text-align: center;
+      color: #fff;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .carousel-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.3px;
+    }
+
     /* --- LIVE HOUSE ANNOUNCEMENT NOTICE BOARD --- */
     .notice-board {
       width: 100%;
@@ -318,7 +454,7 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       padding: 18px 22px;
-      margin-bottom: 35px;
+      margin-bottom: 25px;
       backdrop-filter: blur(16px);
       text-align: left;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
@@ -402,144 +538,33 @@
       margin-left: 10px;
     }
 
-    /* --- RESTRUCTURED 3D CAROUSEL SECTION --- */
-    .carousel-section-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 1.5px;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-
-    .carousel-wrapper {
+    /* --- SITE FOOTER --- */
+    .site-footer {
       width: 100%;
-      height: 340px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: visible;
-      margin-bottom: 25px;
-    }
-
-    .carousel-inner {
-      --w: 130px;
-      --h: 180px;
-      --translateZ: calc(var(--w) * 2.4);
-      --rotateX: -8deg;
-      --perspective: 1100px;
-      
-      position: absolute;
-      width: var(--w);
-      height: var(--h);
-      top: calc(50% - (var(--h) / 2));
-      left: calc(50% - (var(--w) / 2));
-      z-index: 5;
-      transform-style: preserve-3d;
-      transform: perspective(var(--perspective));
-      animation: rotating 32s linear infinite;
-      cursor: pointer;
-    }
-
-    .carousel-inner.paused {
-      animation-play-state: paused !important;
-    }
-
-    @keyframes rotating {
-      from { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(0deg); }
-      to { transform: perspective(var(--perspective)) rotateX(var(--rotateX)) rotateY(360deg); }
-    }
-
-    .card {
-      position: absolute;
-      border: 1.5px solid rgba(var(--color-card), 0.7);
-      border-radius: 14px;
-      overflow: hidden;
-      inset: 0;
-      backface-visibility: visible;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-      transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
-        translateZ(var(--translateZ));
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      background: #0b0f17;
-    }
-
-    .card:hover {
-      border-color: rgba(var(--color-card), 1);
-      transform: rotateY(calc((360deg / var(--quantity)) * var(--index)))
-        translateZ(calc(var(--translateZ) + 15px)) scale(1.06);
-      box-shadow: 0 15px 40px rgba(0, 242, 254, 0.35);
-      z-index: 20;
-    }
-
-    .img-container {
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-
-    .card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      pointer-events: none;
-    }
-
-    .card .overlay {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(
-        circle at center,
-        rgba(var(--color-card), 0.1) 0%,
-        rgba(var(--color-card), 0.35) 70%,
-        rgba(5, 7, 12, 0.8) 100%
-      );
-      mix-blend-mode: overlay;
-    }
-
-    .card-label {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 8px 6px;
-      background: rgba(5, 7, 12, 0.85);
-      backdrop-filter: blur(4px);
-      font-size: 0.68rem;
-      font-weight: 600;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(5, 7, 12, 0.9);
+      backdrop-filter: blur(12px);
+      padding: 20px 24px;
       text-align: center;
-      color: #fff;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
     }
 
-    .carousel-hint {
-      font-size: 0.78rem;
+    .footer-text {
+      font-size: 0.8rem;
       color: var(--text-muted);
-      letter-spacing: 0.4px;
     }
 
-    /* --- TOAST NOTIFICATION --- */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: #00f2fe;
-      color: #05070c;
-      padding: 10px 22px;
-      border-radius: 30px;
-      font-weight: 700;
+    .footer-signature {
       font-size: 0.85rem;
-      box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
-      z-index: 2000;
-      transition: transform 0.3s var(--ease-cb);
-    }
-    .toast.show {
-      transform: translateX(-50%) translateY(0);
+      font-weight: 700;
+      background: linear-gradient(135deg, #ffffff, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 0.5px;
     }
 
     /* --- MODAL POP-UP OVERLAY --- */
@@ -631,7 +656,6 @@
       font-size: 0.88rem;
     }
 
-    /* Modal Form / Feature Styles */
     .modal-form-group {
       display: flex;
       flex-direction: column;
@@ -678,6 +702,41 @@
       color: #ffffff !important;
     }
 
+    /* ACTION BUTTONS FOR EDIT & DELETE IN LISTS */
+    .list-row-item {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 10px 12px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .list-row-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    .icon-action-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: none;
+      color: #fff;
+      padding: 5px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .icon-action-btn:hover {
+      background: rgba(0, 242, 254, 0.2);
+      color: var(--accent-cyan);
+    }
+    .icon-action-btn.delete-btn:hover {
+      background: rgba(239, 68, 68, 0.2);
+      color: #ef4444;
+    }
+
     @keyframes heroAppear {
       from { opacity: 0; transform: translateY(25px) scale(0.97); }
       to { opacity: 1; transform: translateY(0) scale(1); }
@@ -687,9 +746,9 @@
       .glow-heading { font-size: 1.9rem; }
       .modal-body { flex-direction: column; text-align: center; }
       .modal-body img { width: 130px; height: 180px; margin: 0 auto; }
-      .carousel-wrapper { height: 290px; }
       .tools-grid { grid-template-columns: repeat(2, 1fr); }
       .top-bar { padding: 12px 16px; }
+      .carousel-inner { --translateZ: calc(var(--w) * 1.75); }
     }
   </style>
 </head>
@@ -706,7 +765,10 @@
         <span id="statusText">Checking house schedule...</span>
       </div>
     </div>
-    <div style="display: flex; gap: 8px;">
+    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+      <button class="top-utility-btn" id="masterLockBtn" onclick="toggleMasterLock()" title="Toggle Master Lock for Protected Sections">
+        <span id="masterLockIcon">🔒</span> <span id="masterLockLabel">Master Locked</span>
+      </button>
       <button class="top-utility-btn" id="themeToggleBtn" title="Toggle Twilight Theme Mode">
         <span id="themeIcon">🌙</span> <span id="themeLabel">Twilight</span>
       </button>
@@ -740,10 +802,21 @@
       </a>
     </main>
 
-    <!-- Fully Expanded Tools Toolbar Grid (8 Features - Weather removed, WhatsApp Group added) -->
+    <!-- Fully Open / Uncontained 3D Rotating Carousel Section (Spaced Out & Open) -->
+    <div class="carousel-section-container">
+      <div class="carousel-section-title">Explore Hub Features & Guidelines</div>
+      <div class="carousel-wrapper">
+        <div class="carousel-inner" style="--quantity: 10;" id="carousel">
+          <!-- Contextually matched cards generated dynamically -->
+        </div>
+      </div>
+      <div class="carousel-hint">💡 Hover to pause rotation • Click any card for details</div>
+    </div>
+
+    <!-- Fully Expanded Tools Toolbar Grid -->
     <div class="tools-grid">
       <div class="tool-card" onclick="openMaintenanceModal()">
-        <div class="tool-icon">🛠️</div>
+        <div class="tool-icon">🛠</div>
         <div class="tool-title">Maintenance</div>
         <div class="tool-subtitle">Log repairs</div>
       </div>
@@ -797,19 +870,13 @@
         <!-- Dynamically rendered via JavaScript storage sync -->
       </div>
     </section>
-
-    <!-- Restructured 3D Rotating Carousel Section -->
-    <div class="carousel-section-title">Explore Hub Features & Guidelines</div>
-    <div class="carousel-wrapper">
-      <div class="carousel-inner" style="--quantity: 10;" id="carousel">
-        <!-- Contextually matched cards generated dynamically -->
-      </div>
-    </div>
-    <div class="carousel-hint">💡 Hover to pause rotation • Click any card for details</div>
   </div>
 
-  <!-- Toast Notification -->
-  <div class="toast" id="toast">Copied to clipboard!</div>
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <p class="footer-text">© 2026 Resident Portal & House Hub. All Rights Reserved.</p>
+    <p class="footer-signature">Designed by Sumit Rajbanshi</p>
+  </footer>
 
   <!-- Modal Pop-up Structure -->
   <div class="modal-backdrop" id="modalBackdrop">
@@ -824,10 +891,154 @@
   <script>
     // Developer Console Watermark Signature
     console.log(
-      "%c House Nexus Portal %c Created by Sumit © 2026 | All Rights Reserved ",
+      "%c House Nexus Portal %c Created by Sumit Rajbanshi © 2026 | All Rights Reserved ",
       "background: #00f2fe; color: #000; font-weight: bold; padding: 4px; border-radius: 4px 0 0 4px;",
       "background: #05070c; color: #00f2fe; padding: 4px; border-radius: 0 4px 4px 0;"
     );
+
+    // GLOBAL UNLOCKED SECTIONS MAP
+    const unlockedSections = {
+      chores: false,
+      pantry: false,
+      timeline: false
+    };
+
+    let masterUnlocked = false;
+
+    function checkMasterSync() {
+      // Master lock only auto-locks if ALL individual sections are locked together.
+      // Otherwise, individual section changes remain independent.
+      const allLocked = !unlockedSections.chores && !unlockedSections.pantry && !unlockedSections.timeline;
+      if (allLocked) {
+        masterUnlocked = false;
+      }
+      updateMasterLockUI();
+    }
+
+    function toggleMasterLock() {
+      if (!masterUnlocked) {
+        requestMasterPin(() => {
+          masterUnlocked = true;
+          unlockedSections.chores = true;
+          unlockedSections.pantry = true;
+          unlockedSections.timeline = true;
+          updateMasterLockUI();
+          showToast("Master lock unlocked for all sections!");
+        });
+      } else {
+        masterUnlocked = false;
+        unlockedSections.chores = false;
+        unlockedSections.pantry = false;
+        unlockedSections.timeline = false;
+        updateMasterLockUI();
+        showToast("Master lock engaged. All sections locked.");
+      }
+    }
+
+    function updateMasterLockUI() {
+      const icon = document.getElementById('masterLockIcon');
+      const label = document.getElementById('masterLockLabel');
+      if (masterUnlocked) {
+        icon.textContent = '🔓';
+        label.textContent = 'Master Unlocked';
+      } else {
+        icon.textContent = '🔒';
+        label.textContent = 'Master Locked';
+      }
+    }
+
+    function requestMasterPin(onSuccessCallback) {
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🔐 Master Security PIN</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Enter security PIN code to unlock all protected sections.</p>
+          <input type="password" id="masterPinInput" placeholder="Enter PIN" maxlength="4" onkeypress="handlePinKeyPress(event, 'master')">
+          <button class="modal-submit-btn" onclick="verifyMasterPin()">Unlock All</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+      window.masterPinSuccess = onSuccessCallback;
+      setTimeout(() => {
+        const pinInput = document.getElementById('masterPinInput');
+        if (pinInput) pinInput.focus();
+      }, 50);
+    }
+
+    function verifyMasterPin() {
+      const val = document.getElementById('masterPinInput').value;
+      if (val === '2050') {
+        if (window.masterPinSuccess) window.masterPinSuccess();
+        closeModal();
+      } else {
+        showToast("Incorrect PIN. Access denied.");
+        const inputField = document.getElementById('masterPinInput');
+        if (inputField) inputField.style.borderColor = '#ef4444';
+      }
+    }
+
+    function requestSectionUnlock(sectionKey, onSuccessCallback) {
+      if (unlockedSections[sectionKey] || masterUnlocked) {
+        onSuccessCallback();
+        return;
+      }
+      modalInnerContainer.innerHTML = `
+        <div class="modal-form-group">
+          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🔐 Section Locked</h2>
+          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Enter security PIN code to unlock editing and deleting for this section.</p>
+          <input type="password" id="secPinInput" placeholder="Enter PIN" maxlength="4" onkeypress="handlePinKeyPress(event, 'section', '${sectionKey}')">
+          <button class="modal-submit-btn" onclick="verifySectionPin('${sectionKey}')">Unlock Section</button>
+        </div>
+      `;
+      modalBackdrop.classList.add('active');
+      window.currentPinSuccess = onSuccessCallback;
+      setTimeout(() => {
+        const pinInput = document.getElementById('secPinInput');
+        if (pinInput) pinInput.focus();
+      }, 50);
+    }
+
+    function verifySectionPin(sectionKey) {
+      const pinVal = document.getElementById('secPinInput').value;
+      if (pinVal === '2050') {
+        unlockedSections[sectionKey] = true;
+        checkMasterSync();
+        showToast("Section unlocked successfully!");
+        if (window.currentPinSuccess) window.currentPinSuccess();
+      } else {
+        showToast("Incorrect PIN. Access denied.");
+        const inputField = document.getElementById('secPinInput');
+        if (inputField) inputField.style.borderColor = '#ef4444';
+      }
+    }
+
+    function handlePinKeyPress(event, type, sectionKey) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        if (type === 'master') {
+          verifyMasterPin();
+        } else if (type === 'section') {
+          verifySectionPin(sectionKey);
+        }
+      }
+    }
+
+    function toggleSectionLockState(sectionKey, openModalFn) {
+      unlockedSections[sectionKey] = !unlockedSections[sectionKey];
+      
+      // Only lock the master if ALL sections are locked together
+      const allLocked = !unlockedSections.chores && !unlockedSections.pantry && !unlockedSections.timeline;
+      if (allLocked) {
+        masterUnlocked = false;
+      }
+      
+      updateMasterLockUI();
+      if (unlockedSections[sectionKey]) {
+        showToast("Section unlocked!");
+      } else {
+        showToast("Section locked back.");
+      }
+      openModalFn();
+    }
 
     // LIVE STATUS EVALUATOR (Quiet Hours: 10 PM - 7 AM)
     function updateLiveStatus() {
@@ -847,12 +1058,9 @@
     updateLiveStatus();
     setInterval(updateLiveStatus, 60000);
 
-    // TOAST COPY UTILITY
+    // TOAST NOTIFICATION UTILITY
     function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2500);
+      console.log("[Notification]: " + message);
     }
 
     function copyToClipboard(text, message) {
@@ -888,11 +1096,10 @@
       }
     });
 
-    // --- LIVE TICKER PERSISTENCE ENGINE (LocalStorage + BroadcastChannel) ---
+    // --- LIVE TICKER PERSISTENCE ENGINE ---
     const channel = new BroadcastChannel('house_ticker_channel');
     
     let notices = JSON.parse(localStorage.getItem('houseNotices')) || [
-      { text: "📦 Package delivered to front porch for Room 3", time: "10m ago" },
       { text: "♻ Reminder: Yellow recycling bins out tonight", time: "2h ago" }
     ];
 
@@ -965,7 +1172,7 @@
       }
     });
 
-    // EXACT RELEVANT CARD DATA
+    // CARD DATA
     const cardData = [
       { color: '142, 249, 252', title: 'High-Speed Wi-Fi', desc: 'Secure, high-speed fiber connection available across all rooms with zero lag.', image: 'https://images.unsplash.com/photo-1544197150-b99a580bb7a8?auto=format&fit=crop&w=400&q=80' },
       { color: '142, 252, 204', title: 'Kitchen Etiquette', desc: 'Maintain clean cooking spaces, prompt dish washing, and orderly waste management.', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=400&q=80' },
@@ -974,7 +1181,7 @@
       { color: '252, 252, 142', title: 'Shared Lounge', desc: 'Equally shared responsibility for keeping common living areas neat and comfortable.', image: 'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=400&q=80' },
       { color: '252, 208, 142', title: 'Bathroom Care', desc: 'Keep drain hair clear, surfaces wiped down, and replenish toiletries responsibly.', image: 'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=400&q=80' },
       { color: '252, 142, 142', title: 'Guest Policy', desc: 'Overnight guests are permitted up to 2 consecutive nights with advance notice via house chat.', image: 'https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=400&q=80' },
-      { color: '252, 142, 239', title: 'Terms & Conditions', desc: 'Review bond security deposit rules, notice periods, and property guidelines.', image: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=400&q=80' },
+      { color: '252, 142, 239', title: 'Terms & Conditions', desc: 'Review bond security deposit rules, notice periods, and property guidelines.', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUyHx-c5DZ6Qui57c4IbKsBVpwFSf5VrJ7u3MgAbE2Ng&s=10' },
       { color: '204, 142, 252', title: 'Lease & Documents', desc: 'Download official lease contracts, house rules, and inventory checklists directly.', image: 'https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&w=400&q=80' },
       { color: '142, 202, 252', title: 'Emergency Contacts', desc: 'Quick access details for house management, maintenance requests, and emergency lines.', image: 'https://images.unsplash.com/photo-1534536281715-e28d76689b4d?auto=format&fit=crop&w=400&q=80' }
     ];
@@ -1112,48 +1319,178 @@
       showToast("Visitor parking slot logged!");
     }
 
+    // --- CHORES ROSTER WITH SECTION LOCK & TOGGLE ---
     function openChoresModal() {
-      let chores = JSON.parse(localStorage.getItem('houseChores')) || [
-        { task: "Kitchen Counters & Sink", assigned: "Alex (Room 1)" },
-        { task: "Take out Bins (Wed)", assigned: "Sam (Room 2)" },
-        { task: "Vacuum Shared Lounge", assigned: "Jordan (Room 3)" },
-        { task: "Bathroom Sanitization", assigned: "Taylor (Room 4)" }
-      ];
-      let html = `<div class="modal-form-group"><h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🧹 Weekly Chore Roster</h2><p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Current rotational duties for this week:</p><div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">`;
-      chores.forEach(c => {
-        html += `<div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; font-size:0.85rem;"><span>${c.task}</span><strong style="color:var(--accent-cyan);">${c.assigned}</strong></div>`;
+      requestSectionUnlock('chores', () => {
+        let chores = JSON.parse(localStorage.getItem('houseChores')) || [
+          { task: "Kitchen Counters & Sink", assigned: "Alex (Room 1)" },
+          { task: "Take out Bins (Wed)", assigned: "Sam (Room 2)" },
+          { task: "Vacuum Shared Lounge", assigned: "Jordan (Room 3)" },
+          { task: "Bathroom Sanitization", assigned: "Taylor (Room 4)" }
+        ];
+
+        function renderChoresList() {
+          let html = `<div class="modal-form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🧹 Weekly Chore Roster</h2>
+              <button class="top-utility-btn" style="padding: 2px 10px; font-size: 0.72rem; color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.1);" onclick="toggleSectionLockState('chores', openChoresModal)">🔓 Unlocked (Click to Lock)</button>
+            </div>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Manage chores and room assignments:</p>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px; max-height:220px; overflow-y:auto;" id="choresListContainer">`;
+          
+          chores.forEach((c, idx) => {
+            html += `
+              <div class="list-row-item">
+                <div><strong>${c.task}</strong><br><span style="color:var(--accent-cyan); font-size:0.75rem;">Assigned: ${c.assigned}</span></div>
+                <div class="list-row-actions">
+                  <button class="icon-action-btn" onclick="editChoreItem(${idx})" title="Edit chore">✏️</button>
+                  <button class="icon-action-btn delete-btn" onclick="deleteChoreItem(${idx})" title="Delete chore">🗑️</button>
+                </div>
+              </div>
+            `;
+          });
+          html += `</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <input type="text" id="newChoreTask" placeholder="Chore task..." style="flex:1;">
+              <input type="text" id="newChoreAssignee" placeholder="Assignee (e.g. Room 3)" style="flex:1;">
+            </div>
+            <button class="modal-submit-btn" onclick="addNewChoreItem()" style="margin-top:6px;">+ Add Chore</button>
+          </div>`;
+          modalInnerContainer.innerHTML = html;
+        }
+
+        window.addNewChoreItem = () => {
+          const task = document.getElementById('newChoreTask').value;
+          const assigned = document.getElementById('newChoreAssignee').value;
+          if (!task.trim()) return;
+          chores.push({ task: task.trim(), assigned: assigned.trim() || 'Unassigned' });
+          localStorage.setItem('houseChores', JSON.stringify(chores));
+          renderChoresList();
+          showToast("Chore added successfully!");
+        };
+
+        window.editChoreItem = (idx) => {
+          const item = chores[idx];
+          modalInnerContainer.innerHTML = `
+            <div class="modal-form-group">
+              <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">✏️ Edit Chore</h2>
+              <input type="text" id="editChoreTask" value="${item.task}">
+              <input type="text" id="editChoreAssignee" value="${item.assigned}">
+              <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:6px;">
+                <button class="modal-submit-btn" onclick="openChoresModal()" style="background:rgba(255,255,255,0.1); color:#fff;">Cancel</button>
+                <button class="modal-submit-btn" onclick="saveChoreEdit(${idx})">Save Changes</button>
+              </div>
+            </div>
+          `;
+        };
+
+        window.saveChoreEdit = (idx) => {
+          const task = document.getElementById('editChoreTask').value;
+          const assigned = document.getElementById('editChoreAssignee').value;
+          if (!task.trim()) return;
+          chores[idx] = { task: task.trim(), assigned: assigned.trim() };
+          localStorage.setItem('houseChores', JSON.stringify(chores));
+          renderChoresList();
+          showToast("Chore updated!");
+        };
+
+        window.deleteChoreItem = (idx) => {
+          chores.splice(idx, 1);
+          localStorage.setItem('houseChores', JSON.stringify(chores));
+          renderChoresList();
+          showToast("Chore deleted!");
+        };
+
+        renderChoresList();
+        modalBackdrop.classList.add('active');
       });
-      html += `</div><button class="modal-submit-btn" onclick="rotateChores()">Rotate Chores</button></div>`;
-      modalInnerContainer.innerHTML = html;
-      modalBackdrop.classList.add('active');
     }
 
-    function rotateChores() {
-      showToast("Chore roster rotated successfully!");
-      closeModal();
-    }
-
+    // --- PANTRY STOCK WITH SECTION LOCK & TOGGLE ---
     function openPantryModal() {
-      let pantry = JSON.parse(localStorage.getItem('housePantry')) || [
-        { item: "Dish Soap", status: "In Stock" },
-        { item: "Olive Oil", status: "Running Low ⚠️" },
-        { item: "Paper Towels", status: "Needed 🛒" },
-        { item: "Toilet Paper", status: "In Stock" }
-      ];
-      let html = `<div class="modal-form-group"><h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🛒 Pantry & Supply Inventory</h2><p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">House essentials tracking list:</p><div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px;">`;
-      pantry.forEach(p => {
-        html += `<div style="background:rgba(255,255,255,0.03); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; font-size:0.85rem;"><span>${p.item}</span><span style="color:#cbd5e1;">${p.status}</span></div>`;
-      });
-      html += `</div><input type="text" id="newItem" placeholder="Add item needing restock..."><button class="modal-submit-btn" onclick="addPantryItem()">Add to List</button></div>`;
-      modalInnerContainer.innerHTML = html;
-      modalBackdrop.classList.add('active');
-    }
+      requestSectionUnlock('pantry', () => {
+        let pantry = JSON.parse(localStorage.getItem('housePantry')) || [
+          { item: "Dish Soap", status: "In Stock" },
+          { item: "Olive Oil", status: "Running Low ⚠️" },
+          { item: "Paper Towels", status: "Needed 🛒" },
+          { item: "Toilet Paper", status: "In Stock" }
+        ];
 
-    function addPantryItem() {
-      const val = document.getElementById('newItem').value;
-      if (!val.trim()) return;
-      showToast("Pantry item added!");
-      closeModal();
+        function renderPantryList() {
+          let html = `<div class="modal-form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">🛒 Pantry & Supply Inventory</h2>
+              <button class="top-utility-btn" style="padding: 2px 10px; font-size: 0.72rem; color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.1);" onclick="toggleSectionLockState('pantry', openPantryModal)">🔓 Unlocked (Click to Lock)</button>
+            </div>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Edit or manage essential house items:</p>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px; max-height:220px; overflow-y:auto;" id="pantryListContainer">`;
+          
+          pantry.forEach((p, idx) => {
+            html += `
+              <div class="list-row-item">
+                <div><strong>${p.item}</strong><br><span style="color:#cbd5e1; font-size:0.75rem;">Status: ${p.status}</span></div>
+                <div class="list-row-actions">
+                  <button class="icon-action-btn" onclick="editPantryItem(${idx})" title="Edit item">✏️</button>
+                  <button class="icon-action-btn delete-btn" onclick="deletePantryItem(${idx})" title="Delete item">🗑</button>
+                </div>
+              </div>
+            `;
+          });
+          html += `</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <input type="text" id="newPantryItemName" placeholder="Item name..." style="flex:1;">
+              <input type="text" id="newPantryItemStatus" placeholder="Status (e.g. In Stock)" style="flex:1;">
+            </div>
+            <button class="modal-submit-btn" onclick="addNewPantryItem()" style="margin-top:6px;">+ Add Item</button>
+          </div>`;
+          modalInnerContainer.innerHTML = html;
+        }
+
+        window.addNewPantryItem = () => {
+          const name = document.getElementById('newPantryItemName').value;
+          const status = document.getElementById('newPantryItemStatus').value;
+          if (!name.trim()) return;
+          pantry.push({ item: name.trim(), status: status.trim() || 'In Stock' });
+          localStorage.setItem('housePantry', JSON.stringify(pantry));
+          renderPantryList();
+          showToast("Pantry item added!");
+        };
+
+        window.editPantryItem = (idx) => {
+          const item = pantry[idx];
+          modalInnerContainer.innerHTML = `
+            <div class="modal-form-group">
+              <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">✏️ Edit Pantry Item</h2>
+              <input type="text" id="editPantryName" value="${item.item}">
+              <input type="text" id="editPantryStatus" value="${item.status}">
+              <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:6px;">
+                <button class="modal-submit-btn" onclick="openPantryModal()" style="background:rgba(255,255,255,0.1); color:#fff;">Cancel</button>
+                <button class="modal-submit-btn" onclick="savePantryEdit(${idx})">Save Changes</button>
+              </div>
+            </div>
+          `;
+        };
+
+        window.savePantryEdit = (idx) => {
+          const name = document.getElementById('editPantryName').value;
+          const status = document.getElementById('editPantryStatus').value;
+          if (!name.trim()) return;
+          pantry[idx] = { item: name.trim(), status: status.trim() };
+          localStorage.setItem('housePantry', JSON.stringify(pantry));
+          renderPantryList();
+          showToast("Pantry item updated!");
+        };
+
+        window.deletePantryItem = (idx) => {
+          pantry.splice(idx, 1);
+          localStorage.setItem('housePantry', JSON.stringify(pantry));
+          renderPantryList();
+          showToast("Pantry item deleted!");
+        };
+
+        renderPantryList();
+        modalBackdrop.classList.add('active');
+      });
     }
 
     function openChatModal() {
@@ -1178,20 +1515,90 @@
       showToast("House note posted!");
     }
 
+    // --- LEASE & INSPECTION TIMELINE WITH SECTION LOCK & TOGGLE ---
     function openTimelineModal() {
-      modalInnerContainer.innerHTML = `
-        <div class="modal-form-group">
-          <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">📅 Lease & Inspection Timeline</h2>
-          <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Key property milestones and deadlines:</p>
-          <div style="font-size:0.85rem; color:#cbd5e1; display:flex; flex-direction:column; gap:8px; background:rgba(255,255,255,0.03); padding:12px; border-radius:10px;">
-            <div>📌 <strong>Quarterly Inspection:</strong> In 18 Days (Oct 19, 2026)</div>
-            <div>📌 <strong>Lease Renewal Review:</strong> In 64 Days (Dec 04, 2026)</div>
-            <div>📌 <strong>Rent Due Date:</strong> Every Monday</div>
-          </div>
-          <button class="modal-submit-btn" onclick="closeModal()">Got it</button>
-        </div>
-      `;
-      modalBackdrop.classList.add('active');
+      requestSectionUnlock('timeline', () => {
+        let milestones = JSON.parse(localStorage.getItem('houseMilestones')) || [
+          { title: "Quarterly Inspection", detail: "In 18 Days (Oct 19, 2026)" },
+          { title: "Lease Renewal Review", detail: "In 64 Days (Dec 04, 2026)" },
+          { title: "Rent Due Date", detail: "Every Monday" }
+        ];
+
+        function renderMilestonesList() {
+          let html = `<div class="modal-form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px;">
+              <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">📅 Lease & Inspection Timeline</h2>
+              <button class="top-utility-btn" style="padding: 2px 10px; font-size: 0.72rem; color: #10b981; border-color: #10b981; background: rgba(16,185,129,0.1);" onclick="toggleSectionLockState('timeline', openTimelineModal)">🔓 Unlocked (Click to Lock)</button>
+            </div>
+            <p style="color: #94a3b8; font-size: 0.85rem; margin-bottom: 8px;">Key property milestones and deadlines:</p>
+            <div style="display:flex; flex-direction:column; gap:6px; margin-bottom:10px; max-height:220px; overflow-y:auto;" id="milestoneContainer">`;
+          
+          milestones.forEach((m, idx) => {
+            html += `
+              <div class="list-row-item">
+                <div>📌 <strong>${m.title}:</strong> <span style="color:#cbd5e1;">${m.detail}</span></div>
+                <div class="list-row-actions">
+                  <button class="icon-action-btn" onclick="editMilestone(${idx})" title="Edit milestone">✏️</button>
+                  <button class="icon-action-btn delete-btn" onclick="deleteMilestone(${idx})" title="Delete milestone">🗑️</button>
+                </div>
+              </div>
+            `;
+          });
+          html += `</div>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+              <input type="text" id="newMilestoneTitle" placeholder="Milestone Title..." style="flex:1;">
+              <input type="text" id="newMilestoneDetail" placeholder="Date / Schedule..." style="flex:1;">
+            </div>
+            <button class="modal-submit-btn" onclick="addNewMilestone()" style="margin-top:6px;">+ Add Milestone</button>
+          </div>`;
+          modalInnerContainer.innerHTML = html;
+        }
+
+        window.addNewMilestone = () => {
+          const title = document.getElementById('newMilestoneTitle').value;
+          const detail = document.getElementById('newMilestoneDetail').value;
+          if (!title.trim()) return;
+          milestones.push({ title: title.trim(), detail: detail.trim() || 'TBD' });
+          localStorage.setItem('houseMilestones', JSON.stringify(milestones));
+          renderMilestonesList();
+          showToast("Milestone added!");
+        };
+
+        window.editMilestone = (idx) => {
+          const item = milestones[idx];
+          modalInnerContainer.innerHTML = `
+            <div class="modal-form-group">
+              <h2 style="color: var(--accent-cyan); font-size: 1.2rem; margin-bottom: 2px;">✏️ Edit Milestone</h2>
+              <input type="text" id="editMilestoneTitle" value="${item.title}">
+              <input type="text" id="editMilestoneDetail" value="${item.detail}">
+              <div style="display:flex; gap:8px; justify-content:flex-end; margin-top:6px;">
+                <button class="modal-submit-btn" onclick="openTimelineModal()" style="background:rgba(255,255,255,0.1); color:#fff;">Cancel</button>
+                <button class="modal-submit-btn" onclick="saveMilestoneEdit(${idx})">Save Changes</button>
+              </div>
+            </div>
+          `;
+        };
+
+        window.saveMilestoneEdit = (idx) => {
+          const title = document.getElementById('editMilestoneTitle').value;
+          const detail = document.getElementById('editMilestoneDetail').value;
+          if (!title.trim()) return;
+          milestones[idx] = { title: title.trim(), detail: detail.trim() };
+          localStorage.setItem('houseMilestones', JSON.stringify(milestones));
+          renderMilestonesList();
+          showToast("Milestone updated!");
+        };
+
+        window.deleteMilestone = (idx) => {
+          milestones.splice(idx, 1);
+          localStorage.setItem('houseMilestones', JSON.stringify(milestones));
+          renderMilestonesList();
+          showToast("Milestone deleted!");
+        };
+
+        renderMilestonesList();
+        modalBackdrop.classList.add('active');
+      });
     }
 
     // --- WHATSAPP GROUP & MESSAGE PUSH INTEGRATION ---
@@ -1234,15 +1641,12 @@
         return;
       }
 
-      // Save link for consistency
       if (groupLink) {
         localStorage.setItem('houseWhatsAppGroup', groupLink.trim());
       }
 
-      // Push to local notice board ticker as well so both stay synchronized
       addNotice(`📱 WhatsApp Push: ${msgInput.trim()}`);
 
-      // Open WhatsApp click-to-chat API pre-filled with the message
       const encodedMsg = encodeURIComponent(`[Baggott Drive Nexus Hub]: ${msgInput.trim()}`);
       const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMsg}`;
       

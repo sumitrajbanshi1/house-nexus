@@ -29,13 +29,14 @@
       background-color: var(--bg-dark);
       color: var(--text-main);
       min-height: 100vh;
+      min-height: 100dvh;
       overflow-x: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
       perspective: 1200px;
-      padding-top: 75px; /* Added spacing so content isn't clipped by fixed top bar */
+      padding-top: 75px;
     }
 
     #bg-canvas {
@@ -71,7 +72,6 @@
       pointer-events: none;
     }
 
-    /* Floating toggle tab to bring the nav back manually */
     .nav-trigger-pill {
       position: fixed;
       top: 12px;
@@ -607,7 +607,7 @@
       letter-spacing: 0.5px;
     }
 
-    /* --- MODAL POP-UP OVERLAY --- */
+    /* --- MODAL POP-UP OVERLAY (RESPONSIVE CENTERED FIT) --- */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -616,6 +616,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 16px;
       z-index: 1000;
       opacity: 0;
       pointer-events: none;
@@ -631,7 +632,7 @@
       background: #131b2e;
       border: 1px solid rgba(255, 255, 255, 0.12);
       border-radius: 20px;
-      width: 90%;
+      width: 100%;
       max-width: 540px;
       padding: 28px;
       position: relative;
@@ -640,7 +641,7 @@
       transition: transform 0.3s ease;
       color: #f8fafc;
       text-align: left;
-      max-height: 85vh;
+      max-height: 85dvh;
       overflow-y: auto;
     }
 
@@ -794,7 +795,7 @@
         gap: 8px;
       }
       body {
-        padding-top: 110px; /* Adjusted padding for stacked mobile header */
+        padding-top: 110px;
       }
       .top-left-cluster, 
       .top-right-cluster {
@@ -969,13 +970,10 @@
     window.addEventListener('scroll', () => {
       const currentScrollY = window.scrollY;
 
-      // Scrolling Down & past 60px -> Hide Nav
       if (currentScrollY > lastScrollY && currentScrollY > 60) {
         topBar.classList.add('nav-hidden');
         navTriggerBtn.classList.add('visible');
-      } 
-      // Scrolling Up -> Show Nav
-      else if (currentScrollY < lastScrollY) {
+      } else if (currentScrollY < lastScrollY) {
         topBar.classList.remove('nav-hidden');
         navTriggerBtn.classList.remove('visible');
       }
@@ -983,7 +981,6 @@
       lastScrollY = currentScrollY;
     });
 
-    // Manual toggle trigger from floating button
     function toggleNavManually() {
       topBar.classList.toggle('nav-hidden');
       navTriggerBtn.classList.toggle('visible');
@@ -1130,7 +1127,7 @@
       openModalFn();
     }
 
-    // LIVE STATUS EVALUATOR (Quiet Hours: 10 PM - 7 AM)
+    // LIVE STATUS EVALUATOR
     function updateLiveStatus() {
       const now = new Date();
       const hour = now.getHours();
@@ -1148,7 +1145,6 @@
     updateLiveStatus();
     setInterval(updateLiveStatus, 60000);
 
-    // TOAST NOTIFICATION UTILITY
     function showToast(message) {
       console.log("[Notification]: " + message);
     }
@@ -1159,7 +1155,7 @@
       });
     }
 
-    // --- THEME TOGGLE ENGINE (Cyberpunk Dark vs Twilight Slate) ---
+    // THEME TOGGLE ENGINE
     let isTwilightMode = false;
     document.getElementById('themeToggleBtn').addEventListener('click', () => {
       isTwilightMode = !isTwilightMode;
@@ -1186,7 +1182,7 @@
       }
     });
 
-    // --- LIVE TICKER PERSISTENCE ENGINE ---
+    // LIVE TICKER PERSISTENCE ENGINE
     const channel = new BroadcastChannel('house_ticker_channel');
     
     let notices = JSON.parse(localStorage.getItem('houseNotices')) || [
@@ -1315,7 +1311,7 @@
       carousel.appendChild(card);
     });
 
-    // --- MODAL INTERACTION ENGINES ---
+    // MODAL INTERACTION ENGINES
     function openNoticeModal() {
       modalInnerContainer.innerHTML = `
         <div class="modal-form-group">
@@ -1409,7 +1405,7 @@
       showToast("Visitor parking slot logged!");
     }
 
-    // --- CHORES ROSTER WITH SECTION LOCK & TOGGLE ---
+    // CHORES ROSTER
     function openChoresModal() {
       requestSectionUnlock('chores', () => {
         let chores = JSON.parse(localStorage.getItem('houseChores')) || [
@@ -1496,7 +1492,7 @@
       });
     }
 
-    // --- PANTRY STOCK WITH SECTION LOCK & TOGGLE ---
+    // PANTRY STOCK
     function openPantryModal() {
       requestSectionUnlock('pantry', () => {
         let pantry = JSON.parse(localStorage.getItem('housePantry')) || [
@@ -1605,7 +1601,7 @@
       showToast("House note posted!");
     }
 
-    // --- LEASE & INSPECTION TIMELINE WITH SECTION LOCK & TOGGLE ---
+    // LEASE & INSPECTION TIMELINE
     function openTimelineModal() {
       requestSectionUnlock('timeline', () => {
         let milestones = JSON.parse(localStorage.getItem('houseMilestones')) || [
@@ -1691,7 +1687,7 @@
       });
     }
 
-    // --- WHATSAPP GROUP & MESSAGE PUSH INTEGRATION ---
+    // WHATSAPP GROUP & MESSAGE PUSH
     function openWhatsAppModal() {
       const savedGroupLink = localStorage.getItem('houseWhatsAppGroup') || 'https://chat.whatsapp.com/BaggottDriveNexusGroup';
       modalInnerContainer.innerHTML = `
@@ -1745,7 +1741,6 @@
       showToast("Message pushed to WhatsApp chat!");
     }
 
-    // Modal Close Triggers
     modalClose.addEventListener('click', closeModal);
     modalBackdrop.addEventListener('click', (e) => {
       if (e.target === modalBackdrop) closeModal();
@@ -1897,7 +1892,6 @@
     }
     animateCanvas();
 
-    // Typewriter Text Effect
     const introText = "Access Wi-Fi network configs, cleaning guidelines, rubbish collection schedules, chore rosters, pantry inventories, lease countdowns, and WhatsApp group chat pushes...";
     let charIndex = 0;
     function typeText() {
@@ -1909,7 +1903,6 @@
     }
     setTimeout(typeText, 400);
 
-    // Card Mouse Tracking Effect
     const card = document.getElementById('interactiveCard');
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
